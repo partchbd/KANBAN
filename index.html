@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini Kanban App</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; background:#f0f0f3; color:#333; }
+
+    .screen { display:none; }
+    .screen.active { display:block; }
+
+    h1 { text-align:center; padding:20px 0; margin:0; font-weight:normal; color:#444; }
+
+    .container, .screen {
+      max-width:420px;
+      margin:40px auto;
+      background:#ffffff;
+      padding:25px;
+      border-radius:12px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+      border:1px solid #ddd;
+    }
+
+    h2{text-align:center; font-weight:normal; color:#555;} 
+
+    input{
+      width:100%;
+      padding:10px;
+      margin:12px 0;
+      border:1px solid #ccc;
+      border-radius:8px;
+      background:#f9f9f9;
+      font-size:15px;
+    }
+
+    button{
+      width:100%;
+      padding:12px;
+      background:#8aa8c9;
+      border:none;
+      color:white;
+      font-size:16px;
+      border-radius:8px;
+      cursor:pointer;
+      transition:0.2s;
+    }
+
+    button:hover{ background:#6f8fb3; }
+
+    a { color:#6f8fb3; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+  </style>
+</head>
+<body>
+  <h1>Mini Kanban</h1>
+
+  <!-- PANTALLA REGISTRO -->
+  <div id="registerScreen" class="screen active">
+    <h2>Registrarse</h2>
+    <input id="regUser" placeholder="Usuario" /><br />
+    <input id="regPass" type="password" placeholder="Contraseña" /><br />
+    <button onclick="register()">Crear cuenta</button>
+    <p>¿Ya tienes cuenta? <a href="#" onclick="showScreen('loginScreen')">Inicia sesión</a></p>
+  </div>
+
+  <!-- PANTALLA LOGIN -->
+  <div id="loginScreen" class="screen">
+    <h2>Iniciar sesión</h2>
+    <input id="logUser" placeholder="Usuario" /><br />
+    <input id="logPass" type="password" placeholder="Contraseña" /><br />
+    <button onclick="login()">Entrar</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboardScreen" class="screen">
+    <h2>Bienvenido</h2>
+    <p>Elige cómo quieres crear tu tablero:</p>
+    <button onclick="createBoard('solo')">Crear tablero solo</button><br />
+    <button onclick="createBoard('grupo')">Crear tablero en grupo</button>
+    <p id="boardResult"></p>
+  </div>
+
+  <script>
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function register() {
+      const u = document.getElementById('regUser').value;
+      const p = document.getElementById('regPass').value;
+      if (!u || !p) return alert('Llena todos los campos');
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+      users[u] = p;
+      localStorage.setItem('users', JSON.stringify(users));
+
+      alert('Cuenta creada');
+      showScreen('loginScreen');
+    }
+
+    function login() {
+      const u = document.getElementById('logUser').value;
+      const p = document.getElementById('logPass').value;
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+
+      if (users[u] === p) {
+        localStorage.setItem('session', u);
+        showScreen('dashboardScreen');
+      } else {
+        alert('Datos incorrectos');
+      }
+    }
+
+    function createBoard(type) {
+      const msg = type === 'solo'
+        ? 'Tablero creado para uso individual'
+        : 'Tablero creado para trabajo en grupo';
+      document.getElementById('boardResult').innerText = msg;
+    }
+
+    // Mantener sesión
+    window.onload = () => {
+      if (localStorage.getItem('session')) showScreen('dashboardScreen');
+    };
+  </script>
+</body>
+</html>
+
+
