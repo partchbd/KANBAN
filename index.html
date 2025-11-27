@@ -441,6 +441,76 @@
                 const step = document.getElementById(`step${i}`).value.trim();
                 if (step) steps.push(step);
             }
+<script>
+    let boardConfig = {
+      type: '',
+      name: '',
+      workflow: [],
+      workTypes: [{ name: 'Estándar', color: 'yellow' }, { name: 'Trabajo urgente', color: 'red' }], // Valores por defecto
+      background: 'white'
+    };
+
+    function showScreen(id) {
+      // Función central para cambiar de pantalla
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const screenElement = document.getElementById(id);
+      if (screenElement) {
+          screenElement.classList.add('active');
+      } else {
+          console.error(`Error: Pantalla con ID '${id}' no encontrada.`);
+      }
+    }
+
+    function register() {
+      const u = document.getElementById('regUser').value;
+      const p = document.getElementById('regPass').value;
+      if (!u || !p) return alert('Llena todos los campos');
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+      if (users[u]) {
+        alert('El usuario ya existe.');
+        return;
+      }
+      users[u] = p;
+      localStorage.setItem('users', JSON.stringify(users));
+
+      alert('Cuenta creada');
+      showScreen('loginScreen');
+    }
+
+    function login() {
+      const u = document.getElementById('logUser').value;
+      const p = document.getElementById('logPass').value;
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+
+      if (users[u] === p) {
+        localStorage.setItem('session', u);
+        showScreen('dashboardScreen');
+      } else {
+        alert('Datos incorrectos');
+      }
+    }
+
+    /* --- Flujo de Creación de Tablero --- */
+    
+    function startBoardCreation(type) {
+      boardConfig.type = type;
+      showScreen('nameBoardScreen');
+    }
+    
+    function nextStep(nextScreenId, currentScreenId, configKey) {
+        if (configKey === 'boardName') {
+            const name = document.getElementById('boardName').value.trim();
+            if (!name) return alert('Por favor, ingresa un nombre para el tablero.');
+            boardConfig.name = name;
+            
+            document.getElementById('boardNameDisplay1').innerText = name;
+            document.getElementById('boardNameDisplay2').innerText = name;
+        } else if (configKey === 'workflow') {
+            const steps = [];
+            for(let i = 1; i <= 4; i++) {
+                const step = document.getElementById(`step${i}`).value.trim();
+                if (step) steps.push(step);
+            }
             if (steps.length < 2) return alert('Por favor, define al menos 2 pasos para el flujo de trabajo.');
             boardConfig.workflow = steps;
         } else if (configKey === 'workTypes') {
@@ -514,6 +584,7 @@
             columnsContainer.appendChild(columnDiv);
         });
         
+        
         // Actualizar opciones de tipo de tarjeta en el formulario de tarea
         const taskTypeSelect = document.getElementById('taskType');
         taskTypeSelect.innerHTML = '';
@@ -529,9 +600,12 @@
         document.getElementById('taskFormOverlay').classList.add('active');
     }
 
+    // 🚨 ¡CORRECCIÓN CRÍTICA DE SINTAXIS! 🚨
     function hideTaskForm() {
-        document.getElementById('taskFormOverlay').classList.remove('active')
-      function init() {
+        document.getElementById('taskFormOverlay').classList.remove('active');
+    }
+
+    function init() {
       if (localStorage.getItem('session')) {
         showScreen('dashboardScreen');
       } else {
@@ -544,3 +618,4 @@
   </script>
 </body>
 </html>
+
