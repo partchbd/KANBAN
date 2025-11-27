@@ -530,11 +530,17 @@
     }
 
     function hideTaskForm() {
-        document.getElementById('taskFormOverlay').classList.remove('active');
+        document.getElementById('taskFormOverlay').classList.remove('active')
+      function init() {
+      if (localStorage.getItem('session')) {
+        showScreen('dashboardScreen');
+      } else {
+        showScreen('registerScreen'); 
+      }
+    }
 
+    // Llamada de inicialización
+    init();
   </script>
 </body>
 </html>
-
-
-
