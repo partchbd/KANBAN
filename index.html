@@ -12,7 +12,7 @@
 
     h1 { text-align:center; padding:20px 0; margin:0; font-weight:normal; color:#444; }
 
-    .container, .screen {
+    .container, .screen:not(#kanbanBoardScreen) {
       max-width:420px;
       margin:40px auto;
       background:#ffffff;
@@ -21,10 +21,21 @@
       box-shadow:0 4px 12px rgba(0,0,0,0.08);
       border:1px solid #ddd;
     }
+    
+    #kanbanBoardScreen {
+        margin:0;
+        padding:0;
+        max-width:none;
+        width:100vw;
+        height:100vh;
+        overflow:auto;
+        background-color: #f7f7f7; /* Fondo base para el tablero */
+    }
 
     h2{text-align:center; font-weight:normal; color:#555;} 
+    h3 {margin-top:20px; font-weight:normal; color:#555;}
 
-    input{
+    input[type="text"], input[type="password"], textarea{
       width:100%;
       padding:10px;
       margin:12px 0;
@@ -32,7 +43,58 @@
       border-radius:8px;
       background:#f9f9f9;
       font-size:15px;
+      box-sizing: border-box;
     }
+    
+    /* Estilos para el formulario de crear tarea (similar a la imagen 5) */
+    .task-form-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: flex-start;
+        z-index: 100;
+        padding-top: 50px;
+    }
+    .task-form-overlay.active { display: flex; }
+    
+    .task-form-content {
+        width: 90%;
+        max-width: 600px;
+        background-color: #ffffdd; /* Fondo amarillo/claro de la referencia */
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .task-form-content select, .task-form-content input:not([type="submit"]):not([type="button"]) {
+        margin-right: 10px;
+        width: auto;
+    }
+    .task-form-content .header, .task-form-content .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    .task-form-content .footer button {
+        width: auto;
+        margin-right: 10px;
+    }
+    .close-btn {
+        background: none;
+        border: none;
+        color: #333;
+        font-size: 20px;
+        cursor: pointer;
+        width: auto;
+        padding: 5px;
+    }
+    .task-form-content label { display: block; margin-top: 10px; }
+
 
     button{
       width:100%;
@@ -44,18 +106,105 @@
       border-radius:8px;
       cursor:pointer;
       transition:0.2s;
+      margin: 5px 0;
     }
 
     button:hover{ background:#6f8fb3; }
+    
+    .btn-secondary { background: #bbb; }
+    .btn-secondary:hover { background: #999; }
+    
+    .btn-group { display: flex; justify-content: space-between; gap: 10px; }
+    .btn-group button { width: 50%; }
 
     a { color:#6f8fb3; text-decoration:none; }
     a:hover { text-decoration:underline; }
+
+    /* Estilos para las opciones de ejemplo (como en las imágenes de flujo/tipos) */
+    .option-tag {
+        display: inline-block;
+        padding: 5px 10px;
+        margin: 5px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        font-size: 14px;
+        background: #f0f0f0;
+        cursor: default;
+    }
+
+    /* Estilos del Tablero Kanban (simulación de Screenshot_20251127-120645.jpg) */
+    .kanban-board-header {
+        background-color: #fff;
+        padding: 10px 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .kanban-columns {
+        display: flex;
+        padding: 20px;
+        gap: 15px;
+        overflow-x: auto;
+    }
+    .kanban-column {
+        min-width: 250px;
+        background-color: #f7f7f7;
+        border-radius: 8px;
+        padding: 10px;
+    }
+    .kanban-column h3 {
+        text-align: center;
+        background-color: #ffdd00; /* Color de columna de la imagen */
+        padding: 10px 0;
+        margin-top: 0;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .kanban-card {
+        background-color: #fff;
+        padding: 10px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        border-left: 5px solid yellow; /* Simulación de color de tarjeta estándar */
+    }
+    .kanban-card.urgent { border-left-color: red; } /* Simulación de tarjeta urgente */
+
+    /* Estilos para seleccionar fondo (Screenshot_20251127-120600.png) */
+    .background-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 20px;
+    }
+    .background-option {
+        height: 100px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        cursor: pointer;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.7;
+        transition: all 0.2s;
+    }
+    .background-option.selected {
+        border-color: #8aa8c9;
+        border-width: 4px;
+        opacity: 1;
+    }
+    .bg-white { background-color: white; }
+    .bg-lake { background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='); /* Placeholder */ }
+    .bg-tree { background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='); /* Placeholder */ }
+    .bg-mac { background-color: #f0f0f0; } /* Placeholder */
+    .bg-forest { background-color: #333; } /* Placeholder */
   </style>
 </head>
 <body>
   <h1>Mini Kanban</h1>
 
-  <!-- PANTALLA REGISTRO -->
   <div id="registerScreen" class="screen active">
     <h2>Registrarse</h2>
     <input id="regUser" placeholder="Usuario" /><br />
@@ -64,7 +213,6 @@
     <p>¿Ya tienes cuenta? <a href="#" onclick="showScreen('loginScreen')">Inicia sesión</a></p>
   </div>
 
-  <!-- PANTALLA LOGIN -->
   <div id="loginScreen" class="screen">
     <h2>Iniciar sesión</h2>
     <input id="logUser" placeholder="Usuario" /><br />
@@ -72,16 +220,163 @@
     <button onclick="login()">Entrar</button>
   </div>
 
-  <!-- DASHBOARD -->
   <div id="dashboardScreen" class="screen">
     <h2>Bienvenido</h2>
     <p>Elige cómo quieres crear tu tablero:</p>
-    <button onclick="createBoard('solo')">Crear tablero solo</button><br />
-    <button onclick="createBoard('grupo')">Crear tablero en grupo</button>
-    <p id="boardResult"></p>
+    <button onclick="startBoardCreation('solo')">Crear tablero solo</button><br />
+    <button onclick="startBoardCreation('grupo')">Crear tablero en grupo</button>
+  </div>
+
+  <div id="nameBoardScreen" class="screen">
+    <h2>Cree un nuevo tablero</h2>
+    <h3>Empiece dándole un nombre a su nuevo tablero</h3>
+    <p>Ingrese el nombre del nuevo tablero</p>
+    <input id="boardName" type="text" placeholder="Nombre del proceso o proyecto" />
+    <label><input type="checkbox" /> Usa el Asistente AI para ayudarme a construir el tablero. BETA</label>
+    <button onclick="nextStep('workflowScreen', 'nameBoardScreen', 'boardName')">Siguiente</button>
+  </div>
+
+  <div id="workflowScreen" class="screen">
+    <h2>Cree un nuevo tablero</h2>
+    <h3>¿Cuál es el flujo de trabajo de <span id="boardNameDisplay1">Yyy</span>?</h3>
+    <p>Piense en el proceso que desea visualizar en su tablero. ¿Cuál es la secuencia de pasos que deben seguir los elementos de trabajo desde el inicio hasta el final? Escriba cada uno de ellos en el formulario de la izquierda; estos se convertirán en las **columnas** del tablero.</p>
+
+    <input type="text" id="step1" value="Por hacer" placeholder="1. Paso" />
+    <input type="text" id="step2" value="En Progreso" placeholder="2. Paso" />
+    <input type="text" id="step3" value="Completado" placeholder="3. Paso" />
+    <input type="text" id="step4" placeholder="4. Paso (opcional)" />
+    
+    <p>Estos son algunos ejemplos:</p>
+    <div style="text-align: center;">
+        <span class="option-tag">básico</span>
+        <span class="option-tag">impulsado por el tiempo</span>
+        <span class="option-tag">desarrollo de productos</span>
+    </div>
+
+    <button onclick="nextStep('workTypeScreen', 'workflowScreen', 'workflow')">Siguiente</button>
+    <button class="btn-secondary" onclick="prevStep('nameBoardScreen')">Atrás</button>
+  </div>
+
+  <div id="workTypeScreen" class="screen">
+    <h2>Cree un nuevo tablero</h2>
+    <h3>¿Qué tipos de elementos de trabajo aparecen en <span id="boardNameDisplay2">Yyy</span>?</h3>
+    <p>Decida con cuáles elementos trabaja habitualmente. Por ejemplo: peticiones de clientes, reportes de problemas, etc. Introduzca en el formulario de la izquierda y asigne una tarjeta de colores diferentes a cada uno. Estos colores le ayudarán a distinguir cuáles tipos de trabajo están en este proceso.</p>
+
+    <input type="text" id="type1" value="Estándar" placeholder="Tipo 1" style="border-left: 5px solid yellow;"/>
+    <input type="text" id="type2" value="Trabajo urgente" placeholder="Tipo 2" style="border-left: 5px solid red;"/>
+    <input type="text" id="type3" placeholder="Tipo 3 (opcional)" style="border-left: 5px solid lightblue;"/>
+    
+    <p>Pruebe uno de estos:</p>
+    <div style="text-align: center;">
+        <span class="option-tag">Trabajo interno</span>
+        <span class="option-tag">Cambio operacional</span>
+        <span class="option-tag">Nota</span>
+    </div>
+    
+    <button onclick="nextStep('backgroundScreen', 'workTypeScreen', 'workTypes')">Siguiente</button>
+    <button class="btn-secondary" onclick="prevStep('workflowScreen')">Atrás</button>
+    <button class="btn-secondary" onclick="nextStep('kanbanBoardScreen', 'workTypeScreen', 'workTypes')">Finalizar</button>
+  </div>
+  
+  <div id="backgroundScreen" class="screen">
+    <h2>Cree un nuevo tablero</h2>
+    <h3>Seleccione un fondo para su tablero</h3>
+    <p>Foto por: Kanban Tool</p>
+    
+    <div class="background-grid">
+        <div class="background-option bg-white selected" data-bg="white" onclick="selectBackground(this)"></div>
+        <div class="background-option bg-lake" data-bg="lake" onclick="selectBackground(this)"></div>
+        <div class="background-option bg-tree" data-bg="tree" onclick="selectBackground(this)"></div>
+        <div class="background-option" style="background-color: #ccc;"></div>
+        <div class="background-option bg-mac"></div>
+        <div class="background-option bg-forest"></div>
+    </div>
+    
+    <button onclick="nextStep('kanbanBoardScreen', 'backgroundScreen', 'background')">Siguiente</button>
+    <button class="btn-secondary" onclick="prevStep('workTypeScreen')">Atrás</button>
+    <button class="btn-secondary" onclick="nextStep('kanbanBoardScreen', 'backgroundScreen', 'background')">Finalizar</button>
+  </div>
+
+
+  <div id="kanbanBoardScreen" class="screen">
+    <div class="kanban-board-header">
+        <h2 id="finalBoardName">Tablero Kanban</h2>
+        <button style="width: 150px;" onclick="showTaskForm()">+ Nueva Tarea</button>
+    </div>
+    <div class="kanban-columns" id="kanbanColumns">
+        </div>
+  </div>
+
+  <div id="taskFormOverlay" class="task-form-overlay">
+    <div class="task-form-content">
+        <div class="header">
+            <input type="text" placeholder="Dar nombre a tarea..." style="width: auto; flex-grow: 1; margin-right: 10px;" />
+            <span style="font-size: 14px;">+ lista</span>
+            <button class="close-btn" onclick="hideTaskForm()">×</button>
+        </div>
+        
+        <label>Descripción</label>
+        <textarea placeholder="Descripción"></textarea>
+        
+        <label>Adjuntos</label>
+        <input type="text" placeholder="Adjuntos..." />
+
+        <div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; justify-content: space-between;">
+            <div style="flex-grow: 1;">
+                <label>Tipo de tarjeta</label>
+                <select id="taskType">
+                    <option value="Estándar">Estándar</option>
+                    <option value="Trabajo urgente">Trabajo urgente</option>
+                </select>
+            </div>
+
+            <div style="flex-grow: 1;">
+                <label>Prioridad</label>
+                <select>
+                    <option value="normal">normal</option>
+                    <option value="alta">alta</option>
+                </select>
+            </div>
+
+            <div style="flex-grow: 1;">
+                <label>Fecha Límite</label>
+                <input type="date" style="width: 100px;"/>
+            </div>
+
+            <div style="flex-grow: 1;">
+                <label>Asignado a</label>
+                <select>
+                    <option value="nadie">- nadie -</option>
+                    <option value="usuario">Usuario</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button onclick="alert('Tarea creada y formulario cerrado')" style="background-color: #5cb85c;">Crear y cerrar</button>
+                <button onclick="alert('Tarea creada, lista para otra')" style="background-color: #5bc0de;">Crear y añadir nuevo</button>
+                <button onclick="alert('Tarea creada, abriendo edición')">Crear y editar</button>
+            </div>
+            <div>
+                <label style="display: inline-flex; align-items: center; margin-left: 20px; font-size: 14px;">
+                    <input type="checkbox" style="width: auto; margin: 0 5px 0 0;"/> agregar al principio
+                </label>
+            </div>
+        </div>
+    </div>
   </div>
 
   <script>
+    // Configuración global del tablero que se está creando
+    let boardConfig = {
+      type: '',
+      name: '',
+      workflow: [],
+      workTypes: [],
+      background: 'white'
+    };
+
     function showScreen(id) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
@@ -92,6 +387,10 @@
       const p = document.getElementById('regPass').value;
       if (!u || !p) return alert('Llena todos los campos');
       const users = JSON.parse(localStorage.getItem('users') || '{}');
+      if (users[u]) {
+        alert('El usuario ya existe.');
+        return;
+      }
       users[u] = p;
       localStorage.setItem('users', JSON.stringify(users));
 
@@ -112,19 +411,135 @@
       }
     }
 
-    function createBoard(type) {
-      const msg = type === 'solo'
-        ? 'Tablero creado para uso individual'
-        : 'Tablero creado para trabajo en grupo';
-      document.getElementById('boardResult').innerText = msg;
+    /* --- Flujo de Creación de Tablero --- */
+    
+    // Inicia el flujo de creación guardando el tipo de tablero (solo/grupo)
+    function startBoardCreation(type) {
+      boardConfig.type = type;
+      showScreen('nameBoardScreen');
+    }
+    
+    // Navega al siguiente paso y guarda la configuración del paso actual
+    function nextStep(nextScreenId, currentScreenId, configKey) {
+        if (configKey === 'boardName') {
+            const name = document.getElementById('boardName').value.trim();
+            if (!name) return alert('Por favor, ingresa un nombre para el tablero.');
+            boardConfig.name = name;
+            
+            // Actualizar nombres en las pantallas siguientes
+            document.getElementById('boardNameDisplay1').innerText = name;
+            document.getElementById('boardNameDisplay2').innerText = name;
+        } else if (configKey === 'workflow') {
+            const steps = [];
+            for(let i = 1; i <= 4; i++) {
+                const step = document.getElementById(`step${i}`).value.trim();
+                if (step) steps.push(step);
+            }
+            if (steps.length < 2) return alert('Por favor, define al menos 2 pasos para el flujo de trabajo.');
+            boardConfig.workflow = steps;
+        } else if (configKey === 'workTypes') {
+            const types = [];
+            if(document.getElementById('type1').value.trim()) types.push({ name: document.getElementById('type1').value.trim(), color: 'yellow' });
+            if(document.getElementById('type2').value.trim()) types.push({ name: document.getElementById('type2').value.trim(), color: 'red' });
+            if(document.getElementById('type3').value.trim()) types.push({ name: document.getElementById('type3').value.trim(), color: 'lightblue' });
+            
+            if (types.length < 1) return alert('Por favor, define al menos 1 tipo de trabajo.');
+            boardConfig.workTypes = types;
+        } else if (configKey === 'background') {
+            const selectedBg = document.querySelector('.background-option.selected');
+            boardConfig.background = selectedBg ? selectedBg.getAttribute('data-bg') : 'white';
+        }
+
+        if (nextScreenId === 'kanbanBoardScreen') {
+            // Si es la pantalla final, construir y mostrar el tablero
+            generateKanbanBoard();
+        }
+        
+        showScreen(nextScreenId);
+    }
+    
+    // Navega al paso anterior
+    function prevStep(prevScreenId) {
+        showScreen(prevScreenId);
     }
 
-    // Mantener sesión
+    // Maneja la selección de fondo
+    function selectBackground(element) {
+        document.querySelectorAll('.background-option').forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+    }
+
+    // Genera la vista final del tablero
+    function generateKanbanBoard() {
+        const boardScreen = document.getElementById('kanbanBoardScreen');
+        const columnsContainer = document.getElementById('kanbanColumns');
+        
+        // Aplicar fondo
+        boardScreen.style.backgroundImage = boardConfig.background === 'white' ? 'none' : `url(placeholder-for-${boardConfig.background}.jpg)`;
+        boardScreen.style.backgroundColor = boardConfig.background === 'white' ? '#f7f7f7' : '#ddd'; // Un color base si no hay imagen
+
+        document.getElementById('finalBoardName').innerText = boardConfig.name || 'Mi Tablero Kanban';
+        
+        // Limpiar columnas previas
+        columnsContainer.innerHTML = '';
+        
+        // Generar columnas
+        boardConfig.workflow.forEach(step => {
+            const columnDiv = document.createElement('div');
+            columnDiv.className = 'kanban-column';
+            
+            const columnTitle = document.createElement('h3');
+            columnTitle.innerText = step;
+            columnDiv.appendChild(columnTitle);
+            
+            // Añadir una tarjeta de ejemplo
+            const exampleCard = document.createElement('div');
+            exampleCard.className = 'kanban-card';
+            if (step === 'En Progreso') {
+                exampleCard.innerHTML = `<strong>Tarea de Ejemplo</strong><br><small>Tipo: ${boardConfig.workTypes[0].name}</small>`;
+                exampleCard.style.borderLeftColor = boardConfig.workTypes[0].color;
+            } else if (step === 'Por hacer') {
+                exampleCard.className += ' urgent';
+                exampleCard.innerHTML = `<strong>Tarea Urgente</strong><br><small>Tipo: ${boardConfig.workTypes[1].name}</small>`;
+                exampleCard.style.borderLeftColor = boardConfig.workTypes[1].color;
+            } else {
+                 exampleCard.innerHTML = `<em>Sin tareas aún</em>`;
+            }
+            columnDiv.appendChild(exampleCard);
+            
+            columnsContainer.appendChild(columnDiv);
+        });
+        
+       Actualizar opciones de tipo de tarjeta en el formulario de tarea
+        const taskTypeSelect = document.getElementById('taskType');
+        taskTypeSelect.innerHTML = ''; // Limpiar
+        boardConfig.workTypes.forEach(type => {
+            const option = document.createElement('option');
+            option.value = type.name;
+            option.innerText = type.name;
+            taskTypeSelect.appendChild(option);
+        });
+    }
+
+    // Muestra el formulario de creación de tarea
+    function showTaskForm() {
+        document.getElementById('taskFormOverlay').classList.add('active');
+    }
+
+    // Oculta el formulario de creación de tarea
+    function hideTaskForm() {
+        document.getElementById('taskFormOverlay').classList.remove('active');
+    }
+    
+    /* --- Inicialización --- */
     window.onload = () => {
-      if (localStorage.getItem('session')) showScreen('dashboardScreen');
+      // Intenta mantener la sesión
+      if (localStorage.getItem('session')) {
+        showScreen('dashboardScreen');
+      } else {
+        showScreen('registerScreen'); // Asegura que la pantalla de registro sea la primera si no hay sesión
+      }
     };
   </script>
 </body>
 </html>
-
-
