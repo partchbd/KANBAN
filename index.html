@@ -12,7 +12,8 @@
 
     h1 { text-align:center; padding:20px 0; margin:0; font-weight:normal; color:#444; }
 
-    .container, .screen {
+    /* Se modifica el contenedor para excluir el tablero Kanban que es de pantalla completa */
+    .container, .screen:not(#kanbanBoardScreen) {
       max-width:420px;
       margin:40px auto;
       background:#ffffff;
@@ -22,9 +23,21 @@
       border:1px solid #ddd;
     }
 
-    h2{text-align:center; font-weight:normal; color:#555;} 
+    /* Estilo específico para la pantalla Kanban */
+    #kanbanBoardScreen {
+        margin:0;
+        padding:0;
+        max-width:none;
+        width:100vw;
+        height:100vh;
+        overflow:auto;
+        background-color: #f7f7f7; 
+    }
 
-    input{
+    h2{text-align:center; font-weight:normal; color:#555;} 
+    h3 {margin-top:20px; font-weight:normal; color:#555;}
+
+    input[type="text"], input[type="password"], textarea{
       width:100%;
       padding:10px;
       margin:12px 0;
@@ -32,6 +45,7 @@
       border-radius:8px;
       background:#f9f9f9;
       font-size:15px;
+      box-sizing: border-box;
     }
 
     button{
@@ -44,85 +58,294 @@
       border-radius:8px;
       cursor:pointer;
       transition:0.2s;
+      margin: 5px 0;
     }
 
     button:hover{ background:#6f8fb3; }
 
-    a { color:#6f8fb3; text-decoration:none; }
-    a:hover { text-decoration:underline; }
+    .btn-secondary { background: #bbb; }
+    .btn-secondary:hover { background: #999; }
+    
+    .button-group { display: flex; justify-content: space-between; gap: 10px; margin-top: 20px; }
+    .button-group button { width: 50%; }
+
+    /* Kanban */
+    .kanban-board-header {
+        background-color: #fff;
+        padding: 10px 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+    }
+    .kanban-columns {
+        display: flex;
+        padding: 20px;
+        gap: 15px;
+        overflow-x: auto;
+    }
+    .kanban-column {
+        min-width: 250px;
+        background-color: #f7f7f7;
+        border-radius: 8px;
+        padding: 10px;
+        min-height: 100px;
+    }
+    .kanban-column h3 {
+        text-align: center;
+        background-color: #ffdd00;
+        padding: 10px;
+        margin: 0 0 10px 0;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+    .kanban-card {
+        background-color: #fff;
+        padding: 10px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+        border-left: 5px solid;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    /* Modal Tareas */
+    .task-form-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 50px;
+        z-index: 200;
+    }
+    .task-form-overlay.active { display: flex; }
+    .task-form-content {
+        width: 90%;
+        max-width: 600px;
+        background:#ffffdd;
+        border-radius: 8px;
+        padding: 20px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 5px 15px rgba(0,0,0,.3);
+    }
+    .close-btn { background:none; border:none; font-size:22px; cursor:pointer; }
   </style>
 </head>
 <body>
+
   <h1>Mini Kanban</h1>
 
-  <!-- PANTALLA REGISTRO -->
+  <!-- REGISTRO -->
   <div id="registerScreen" class="screen active">
     <h2>Registrarse</h2>
-    <input id="regUser" placeholder="Usuario" /><br />
-    <input id="regPass" type="password" placeholder="Contraseña" /><br />
+    <input id="regUser" placeholder="Usuario" />
+    <input id="regPass" type="password" placeholder="Contraseña" />
     <button onclick="register()">Crear cuenta</button>
     <p>¿Ya tienes cuenta? <a href="#" onclick="showScreen('loginScreen')">Inicia sesión</a></p>
   </div>
 
-  <!-- PANTALLA LOGIN -->
+  <!-- LOGIN -->
   <div id="loginScreen" class="screen">
     <h2>Iniciar sesión</h2>
-    <input id="logUser" placeholder="Usuario" /><br />
-    <input id="logPass" type="password" placeholder="Contraseña" /><br />
+    <input id="logUser" placeholder="Usuario" />
+    <input id="logPass" type="password" placeholder="Contraseña" />
     <button onclick="login()">Entrar</button>
   </div>
 
   <!-- DASHBOARD -->
   <div id="dashboardScreen" class="screen">
-    <h2>Bienvenido</h2>
+    <h2>Bienvenido <span id="welcomeUser"></span></h2>
     <p>Elige cómo quieres crear tu tablero:</p>
-    <button onclick="createBoard('solo')">Crear tablero solo</button><br />
-    <button onclick="createBoard('grupo')">Crear tablero en grupo</button>
-    <p id="boardResult"></p>
+    <button onclick="startBoardCreation('solo')">Crear tablero solo</button>
+    <button onclick="startBoardCreation('grupo')">Crear tablero en grupo</button>
+    <button onclick="logout()">Cerrar sesión</button>
   </div>
 
-  <script>
-    function showScreen(id) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
+  <!-- NOMBRE TABLERO -->
+  <div id="nameBoardScreen" class="screen">
+    <h2>Cree un nuevo tablero</h2>
+    <h3>Nombre del tablero</h3>
+    <input id="boardName" placeholder="Nombre del proceso" />
+    <div class="button-group">
+      <button class="btn-secondary" onclick="showScreen('dashboardScreen')">Atrás</button>
+      <button onclick="nextStep('workflowScreen','nameBoardScreen','boardName')">Siguiente</button>
+    </div>
+  </div>
 
-    function register() {
-      const u = document.getElementById('regUser').value;
-      const p = document.getElementById('regPass').value;
-      if (!u || !p) return alert('Llena todos los campos');
-      const users = JSON.parse(localStorage.getItem('users') || '{}');
-      users[u] = p;
-      localStorage.setItem('users', JSON.stringify(users));
+  <!-- WORKFLOW -->
+  <div id="workflowScreen" class="screen">
+    <h2>Flujo de trabajo de <span id="boardNameDisplay1">Yyy</span></h2>
+    <input id="step1" value="Por hacer" />
+    <input id="step2" value="En Progreso" />
+    <input id="step3" value="Completado" />
+    <input id="step4" placeholder="Paso opcional" />
+    <div class="button-group">
+      <button class="btn-secondary" onclick="prevStep('nameBoardScreen')">Atrás</button>
+      <button onclick="nextStep('workTypeScreen','workflowScreen','workflow')">Siguiente</button>
+    </div>
+  </div>
 
-      alert('Cuenta creada');
-      showScreen('loginScreen');
-    }
+  <!-- TIPOS -->
+  <div id="workTypeScreen" class="screen">
+    <h2>Tipos de trabajo</h2>
+    <input id="type1" value="Estándar" style="border-left:5px solid yellow;">
+    <input id="type2" value="Urgente" style="border-left:5px solid red;">
+    <input id="type3" placeholder="Opcional" style="border-left:5px solid lightblue;">
+    <div class="button-group">
+      <button class="btn-secondary" onclick="prevStep('workflowScreen')">Atrás</button>
+      <button onclick="nextStep('kanbanBoardScreen','workTypeScreen','workTypes')">Finalizar</button>
+    </div>
+  </div>
 
-    function login() {
-      const u = document.getElementById('logUser').value;
-      const p = document.getElementById('logPass').value;
-      const users = JSON.parse(localStorage.getItem('users') || '{}');
+  <!-- TABLERO -->
+  <div id="kanbanBoardScreen" class="screen">
+    <div class="kanban-board-header">
+      <h2 id="finalBoardName">Tablero Kanban</h2>
+      <button onclick="showTaskForm()" style="width:150px;">+ Nueva Tarea</button>
+    </div>
+    <div id="kanbanColumns" class="kanban-columns"></div>
+  </div>
 
-      if (users[u] === p) {
-        localStorage.setItem('session', u);
-        showScreen('dashboardScreen');
-      } else {
-        alert('Datos incorrectos');
-      }
-    }
+  <!-- MODAL -->
+  <div id="taskFormOverlay" class="task-form-overlay">
+    <div class="task-form-content">
+      <div style="display:flex; justify-content:space-between;">
+        <input placeholder="Nombre tarea..." style="flex:1; margin-right:10px;">
+        <button class="close-btn" onclick="hideTaskForm()">×</button>
+      </div>
+      <textarea placeholder="Descripción"></textarea>
+      <button onclick="hideTaskForm()">Crear</button>
+    </div>
+  </div>
 
-    function createBoard(type) {
-      const msg = type === 'solo'
-        ? 'Tablero creado para uso individual'
-        : 'Tablero creado para trabajo en grupo';
-      document.getElementById('boardResult').innerText = msg;
-    }
+<script>
 
-    // Mantener sesión
-    window.onload = () => {
-      if (localStorage.getItem('session')) showScreen('dashboardScreen');
-    };
-  </script>
+let boardConfig = {
+  name: '',
+  workflow: [],
+  workTypes: []
+};
+
+let userName = "";
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* REGISTRO */
+function register(){
+  const u = regUser.value.trim();
+  const p = regPass.value.trim();
+  if(!u || !p) return alert("Llena todo");
+
+  const users = JSON.parse(localStorage.getItem("users") || "{}");
+
+  if(users[u]) return alert("Ese usuario ya existe");
+
+  users[u] = p;
+  localStorage.setItem("users", JSON.stringify(users));
+  alert("Cuenta creada");
+  showScreen("loginScreen");
+}
+
+/* LOGIN */
+function login(){
+  const u = logUser.value.trim();
+  const p = logPass.value.trim();
+  const users = JSON.parse(localStorage.getItem("users") || "{}");
+
+  if(users[u] === p){
+    localStorage.setItem("session", u);
+    userName = u;
+    welcomeUser.innerText = u;
+    showScreen("dashboardScreen");
+  } else {
+    alert("Datos incorrectos");
+  }
+}
+
+function logout(){
+  localStorage.removeItem("session");
+  userName = "";
+  showScreen("loginScreen");
+}
+
+/* CREAR TABLERO */
+function startBoardCreation(){
+  showScreen("nameBoardScreen");
+}
+
+function nextStep(next, current, key){
+  if(key === "boardName"){
+    const name = boardName.value.trim();
+    if(!name) return alert("Escribe un nombre");
+    boardConfig.name = name;
+    boardNameDisplay1.innerText = name;
+  }
+
+  if(key === "workflow"){
+    const steps = [step1.value, step2.value, step3.value, step4.value].filter(x=>x.trim());
+    if(steps.length < 2) return alert("Mínimo 2 pasos");
+    boardConfig.workflow = steps;
+  }
+
+  if(key === "workTypes"){
+    const types = [];
+    if(type1.value.trim()) types.push({name:type1.value, color:"yellow"});
+    if(type2.value.trim()) types.push({name:type2.value, color:"red"});
+    if(type3.value.trim()) types.push({name:type3.value, color:"lightblue"});
+    boardConfig.workTypes = types;
+    generateKanbanBoard();
+  }
+
+  showScreen(next);
+}
+
+function prevStep(prev){ showScreen(prev); }
+
+/* GENERAR KANBAN */
+function generateKanbanBoard(){
+  finalBoardName.innerText = boardConfig.name;
+  const cont = document.getElementById("kanbanColumns");
+  cont.innerHTML = "";
+
+  boardConfig.workflow.forEach(step=>{
+    const col = document.createElement("div");
+    col.className = "kanban-column";
+    col.innerHTML = <h3>${step}</h3>;
+    cont.appendChild(col);
+  });
+}
+
+/* MODAL */
+function showTaskForm(){ taskFormOverlay.classList.add("active"); }
+function hideTaskForm(){ taskFormOverlay.classList.remove("active"); }
+
+/* ARREGLO IMPORTANTE: CONTROL INICIAL DE SESIÓN */
+window.onload = ()=>{
+  const sessionUser = localStorage.getItem("session");
+  const users = JSON.parse(localStorage.getItem("users") || "{}");
+
+  if(!sessionUser || !users[sessionUser]){
+    showScreen("registerScreen");
+    return;
+  }
+
+  userName = sessionUser;
+  welcomeUser.innerText = userName;
+  showScreen("dashboardScreen");
+};
+
+</script>
+
 </body>
 </html>
