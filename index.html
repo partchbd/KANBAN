@@ -321,7 +321,8 @@ function generateKanbanBoard(){
   boardConfig.workflow.forEach(step=>{
     const col = document.createElement("div");
     col.className = "kanban-column";
-    col.innerHTML = <h3>${step}</h3>;
+    col.innerHTML = `<h3>${step}</h3>`;
+
     cont.appendChild(col);
   });
 }
