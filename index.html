@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Bloc de Notas - Detalles Importantes</title>
+    <style>
+        /* CSS: Un diseño limpio y moderno */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h2 { text-align: center; color: #2c3e50; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #2980b9; }
+        .notas-lista { margin-top: 20px; }
+        .nota-card {
+            background: #f9f9f9;
+            padding: 15px;
+            border-left: 5px solid #3498db;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            position: relative;
+        }
+        .nota-card.Alta { border-left-color: #e74c3c; } /* Rojo para prioridad alta */
+        .nota-card.Media { border-left-color: #f1c40f; } /* Amarillo */
+        .nota-card.Baja { border-left-color: #2ecc71; } /* Verde */
+        .btn-borrar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-weight: bold;
+            width: auto;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📌 Registro de Detalles</h2>
+    
+    <!-- Formulario para ingresar datos -->
+    <div class="form-group">
+        <label for="categoria">Categoría:</label>
+        <select id="categoria">
+            <option value="Comida/Dulces">Comida / Dulces</option>
+            <option value="Música/Películas">Música / Películas</option>
+            <option value="Fechas Importantes">Fechas Importantes</option>
+            <option value="Cosas que detesta">Cosas que detesta ⚠️</option>
+            <option value="Ideas de Regalos">Ideas de Regalos</option>
+            <option value="Otros">Otros datos curiosos</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="detalle">¿Qué te dijo? (El detalle):</label>
+        <textarea id="detalle" rows="3" placeholder="Ej. No le gusta el cilantro y ama los girasoles..."></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="prioridad">Prioridad:</label>
+        <select id="prioridad">
+            <option value="Baja">Baja (Dato curioso)</option>
+            <option value="Media">Media (Gustos generales)</option>
+            <option value="Alta">Alta (¡No lo olvides!)</option>
+        </select>
+    </div>
+
+    <button onclick="guardarNota()">Guardar en la memoria</button>
+
+    <!-- Aquí se van a mostrar las notas guardadas -->
+    <div class="notas-lista" id="listaNotas"></div>
+</div>
+
+<script>
+    // JAVASCRIPT: Lógica para guardar y cargar datos usando localStorage
+    
+    // Ejecutar al cargar la página para mostrar lo que ya estaba guardado
+    document.addEventListener("DOMContentLoaded", mostrarNotas);
+
+    function guardarNota() {
+        const categoria = document.getElementById("categoria").value;
+        const detalle = document.getElementById("detalle").value;
+        const prioridad = document.getElementById("prioridad").value;
+        
+        if (detalle.trim() === "") {
+            alert("Escribe algo primero, no la vayas a dejar en blanco.");
+            return;
+        }
+
+        const nuevaNota = {
+            id: Date.now(),
+            categoria: categoria,
+            detalle: detalle,
+            prioridad: prioridad,
+            fecha: new Date().toLocaleDateString()
+        };
+
+        // Obtener notas existentes o crear un arreglo vacío si no hay
+        let notas = JSON.parse(localStorage.getItem("misNotas")) || [];
+        notas.push(nuevaNota);
+        
+        // Guardar de nuevo en el navegador
+        localStorage.setItem("misNotas", JSON.stringify(notas));
+
+        // Limpiar el campo de texto y actualizar la lista
+        document.getElementById("detalle").value = "";
+        mostrarNotas();
+    }
+
+    function mostrarNotas() {
+        const lista = document.getElementById("listaNotas");
+        lista.innerHTML = "<h3>Cosas recordadas:</h3>";
+        
+        let notas = JSON.parse(localStorage.getItem("misNotas")) || [];
+
+        if (notas.length === 0) {
+            lista.innerHTML += "<p style='color: gray; text-align: center;'>Aún no hay datos guardados. ¡Empieza a registrar!</p>";
+            return;
+        }
+
+        // Mostrar las notas (las más recientes primero)
+        notas.reverse().forEach(nota => {
+            lista.innerHTML += `
+                <div class="nota-card ${nota.prioridad}">
+                    <button class="btn-borrar" onclick="borrarNota(${nota.id})">X</button>
+                    <strong>[${nota.categoria}]</strong> <small style="color: #7f8c8d;">(${nota.fecha})</small>
+                    <p style="margin: 5px 0 0 0;">${nota.detalle}</p>
+                    <span style="font-size: 11px; color: #7f8c8d;">Prioridad: ${nota.prioridad}</span>
+                </div>
+            `;
+        });
+    }
+
+    function borrarNota(id) {
+        let notas = JSON.parse(localStorage.getItem("misNotas")) || [];
+        // Filtrar para eliminar la nota con el ID seleccionado
+        notas = notas.filter(nota => nota.id !== id);
+        localStorage.setItem("misNotas", JSON.stringify(notas));
+        mostrarNotas();
+    }
+</script>
+
+</body>
+</html>
