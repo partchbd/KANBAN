@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANARCHY RECORDS ❤</title>
+    <title>Base de Datos Personal</title>
     <style>
         :root {
-            --bg-default: #0a0a0c;
-            --card-bg: rgba(14, 14, 18, 0.85);
-            --border-punk: #3a3a4a;
-            --text-main: #f3f4f6;
-            --text-muted: #6b7280;
+            --bg-default: #0f141c;
+            --card-bg: rgba(22, 28, 38, 0.9);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-main: #f1f5f9;
+            --text-muted: #64748b;
             
-            /* Paleta Punk de Neones */
-            --punk-pink: #ff0055;
-            --punk-cyan: #00ffcc;
-            --punk-yellow: #ffea00;
-            --punk-purple: #9d4edd;
+            /* Colores de acento limpios */
+            --color-gustos: #00ffcc;
+            --color-descubrir: #b55fe6;
+            --color-alertas: #ff3b6f;
         }
 
         body {
-            font-family: 'Courier New', Courier, monospace, system-ui;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             background: var(--bg-default);
             margin: 0;
             padding: 20px;
@@ -29,10 +28,6 @@
             align-items: center;
             min-height: 100vh;
             color: var(--text-main);
-            position: relative;
-            background-image: radial-gradient(rgba(255, 0, 85, 0.08) 1px, transparent 0), radial-gradient(rgba(0, 255, 204, 0.08) 1px, transparent 0);
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
         }
 
         #body-bg-layer {
@@ -43,93 +38,74 @@
             height: 100%;
             background-size: cover;
             background-position: center;
-            filter: grayscale(80%) contrast(140%) blur(8px);
-            opacity: 0.25;
+            filter: blur(15px);
+            opacity: 0.3;
             z-index: -1;
             display: none;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 850px;
             width: 100%;
             background: var(--card-bg);
             padding: 30px;
-            border-radius: 0px; /* Estilo crudo/angular */
-            border: 3px solid var(--text-main);
-            box-shadow: 8px 8px 0px var(--punk-pink);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             box-sizing: border-box;
-            z-index: 1;
         }
 
         h1 {
             text-align: center;
             margin-top: 0;
-            font-weight: 900;
-            font-size: 3rem;
-            color: var(--text-main);
-            text-transform: uppercase;
-            letter-spacing: -2px;
-            border-bottom: 4px dashed var(--punk-cyan);
-            padding-bottom: 10px;
-            text-shadow: 3px 3px 0px var(--punk-pink);
+            font-weight: 700;
+            font-size: 2.2rem;
+            letter-spacing: -0.5px;
+            color: #fff;
         }
 
-        /* Tabs Sistema Punk */
+        /* Sistema de Pestañas Dinámicas */
         .tabs-container {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
             flex-wrap: wrap;
         }
 
         .tab-btn {
-            background: #000;
-            border: 2px solid var(--border-punk);
-            color: #fff;
-            padding: 12px 20px;
-            font-weight: bold;
-            font-family: inherit;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 10px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            text-transform: uppercase;
-            transition: all 0.15s ease;
+            font-weight: 600;
+            font-size: 13px;
+            transition: transform 0.1s, background 0.2s;
         }
 
         .tab-btn:hover {
-            border-color: var(--punk-yellow);
-            color: var(--punk-yellow);
-            transform: translate(-2px, -2px);
-            box-shadow: 2px 2px 0px var(--punk-yellow);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
         }
 
-        /* Estados Activos Personalizados por Pestaña */
-        .tab-btn.active[data-tab="Gustos"] {
-            background: var(--punk-cyan);
-            color: #000;
-            border-color: #000;
-            box-shadow: 4px 4px 0px #fff;
-        }
-        .tab-btn.active[data-tab="Por Descubrir"] {
-            background: var(--punk-purple);
-            color: #fff;
-            border-color: #000;
-            box-shadow: 4px 4px 0px var(--punk-cyan);
-        }
-        .tab-btn.active[data-tab="Alertas"] {
-            background: var(--punk-pink);
-            color: #fff;
-            border-color: #000;
-            box-shadow: 4px 4px 0px var(--punk-yellow);
-        }
+        /* Colores asignados dinámicamente cuando están activos */
+        .tab-btn.active[data-tab="seccion1"] { background: var(--color-gustos); color: #000; border-color: var(--color-gustos); }
+        .tab-btn.active[data-tab="seccion2"] { background: var(--color-descubrir); color: #fff; border-color: var(--color-descubrir); }
+        .tab-btn.active[data-tab="seccion3"] { background: var(--color-alertas); color: #fff; border-color: var(--color-alertas); }
 
-        /* Layout Formulario */
+        /* Formulario */
         .grid-form {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
-            background: #000;
-            padding: 24px;
-            border: 2px solid var(--border-punk);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
             margin-bottom: 20px;
         }
 
@@ -140,172 +116,177 @@
         @media (max-width: 600px) { .form-group.full-width { grid-column: span 1; } }
 
         label {
-            margin-bottom: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            color: var(--punk-cyan);
+            margin-bottom: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         input, select, textarea {
             padding: 12px;
-            border: 2px solid var(--border-punk);
-            background-color: #121216;
+            border: 1px solid var(--border-color);
+            background-color: #0b0f15;
             color: var(--text-main);
-            font-family: inherit;
+            border-radius: 8px;
             font-size: 14px;
-            border-radius: 0;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: var(--punk-yellow);
+            border-color: #fff;
         }
 
         .select-with-btn { display: flex; gap: 8px; }
         .select-with-btn select { flex: 1; }
         
         .btn-gear {
-            background: #222;
-            border: 2px solid var(--border-punk);
-            color: white;
-            padding: 0 15px;
+            background: #1e2530;
+            border: 1px solid var(--border-color);
+            color: #fff;
+            border-radius: 8px;
+            padding: 0 12px;
             cursor: pointer;
-            font-weight: bold;
+            font-size: 13px;
+            font-weight: 600;
         }
-        .btn-gear:hover { background: var(--punk-pink); }
+        .btn-gear:hover { background: #2d3748; }
 
         button.btn-guardar {
             grid-column: span 2;
-            padding: 16px;
-            background-color: var(--text-main);
+            padding: 14px;
+            background-color: #fff;
             color: #000;
-            border: 2px solid #000;
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
-            box-shadow: 4px 4px 0px var(--punk-cyan);
+            transition: background 0.2s;
         }
         @media (max-width: 600px) { button.btn-guardar { grid-column: span 1; } }
-        button.btn-guardar:hover {
-            background-color: var(--punk-yellow);
-            box-shadow: 4px 4px 0px var(--punk-pink);
-        }
+        button.btn-guardar:hover { background-color: #e2e8f0; }
 
-        /* Panel de Opciones Modificado */
+        /* Panel de Configuración Avanzado (Editor de nombres y opciones) */
         .manager-panel {
             display: none;
             grid-column: span 2;
-            background: #16161e;
-            border: 2px dashed var(--punk-pink);
+            background: #131922;
+            border: 1px dashed var(--text-muted);
             padding: 20px;
+            border-radius: 10px;
             margin-bottom: 10px;
         }
         @media (max-width: 600px) { .manager-panel { grid-column: span 1; } }
 
-        .manager-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .manager-row {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .manager-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
         .manager-item {
-            background: #000;
-            border: 1px solid var(--border-punk);
-            padding: 6px 12px;
-            font-size: 13px;
+            background: #1e2530;
+            border: 1px solid var(--border-color);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 12px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
-        .manager-item span.delete-opt { color: var(--punk-pink); cursor: pointer; font-weight: bold; }
+        .manager-item span.delete-opt { color: var(--color-alertas); cursor: pointer; font-weight: bold; }
 
-        /* --- SISTEMA DE COLOR DINÁMICO POR SECCIÓN --- */
+        /* Estructura de las Tarjetas */
         .notas-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 16px;
             margin-top: 20px;
         }
         @media (max-width: 768px) { .notas-grid { grid-template-columns: 1fr; } }
 
         .nota-card {
-            background: #000;
-            padding: 22px;
-            border: 2px solid var(--border-punk);
+            background: #141a24;
+            padding: 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        /* Colores específicos inyectados dinámicamente según la pestaña */
-        .nota-card.card-gustos {
-            border-left: 6px solid var(--punk-cyan);
-            box-shadow: 4px 4px 0px rgba(0, 255, 204, 0.15);
-        }
-        .nota-card.card-descubrir {
-            border-left: 6px solid var(--punk-purple);
-            box-shadow: 4px 4px 0px rgba(157, 78, 221, 0.15);
-        }
-        .nota-card.card-alertas {
-            border-left: 6px solid var(--punk-pink);
-            box-shadow: 4px 4px 0px rgba(255, 0, 85, 0.2);
-            background: linear-gradient(to right, rgba(255, 0, 85, 0.04), transparent);
-        }
+        /* Colores Dinámicos en los Bordes de las Tarjetas */
+        .nota-card.card-seccion1 { border-left: 4px solid var(--color-gustos); }
+        .nota-card.card-seccion2 { border-left: 4px solid var(--color-descubrir); }
+        .nota-card.card-seccion3 { border-left: 4px solid var(--color-alertas); }
 
         .nota-card img {
             width: 100%;
-            max-height: 240px;
+            max-height: 200px;
             object-fit: cover;
-            border: 2px solid var(--border-punk);
-            margin-top: 15px;
+            border-radius: 6px;
+            margin-top: 12px;
         }
 
         .btn-borrar {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 12px;
+            right: 12px;
             background: none;
             border: none;
             color: var(--text-muted);
             cursor: pointer;
-            font-size: 22px;
+            font-size: 18px;
         }
-        .btn-borrar:hover { color: var(--punk-pink); }
+        .btn-borrar:hover { color: var(--color-alertas); }
 
         .sub-info {
             font-size: 11px;
-            margin-top: 15px;
+            color: var(--text-muted);
+            margin-top: 12px;
             display: flex;
-            gap: 6px;
+            gap: 5px;
             flex-wrap: wrap;
         }
         .sub-info span {
-            background: #121216;
-            padding: 4px 8px;
-            border: 1px solid var(--border-punk);
+            background: rgba(255,255,255,0.03);
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
         }
 
-        /* Config superior barra */
+        /* Barra Config de Fondo */
         .settings-section {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #000;
-            padding: 12px 20px;
-            margin-bottom: 25px;
-            border: 2px solid var(--border-punk);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
             width: 100%;
             box-sizing: border-box;
             gap: 10px;
             flex-wrap: wrap;
         }
         .backup-btns button {
-            background: #121216;
-            color: #fff;
-            border: 1px solid var(--border-punk);
-            padding: 6px 12px;
+            background: #1e2530;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 11px;
             cursor: pointer;
-            font-family: inherit;
         }
-        .backup-btns button:hover { background: var(--text-main); color: #000; }
+        .backup-btns button:hover { background: #2d3748; }
     </style>
 </head>
 <body>
@@ -313,125 +294,152 @@
     <div id="body-bg-layer"></div>
 
 <div class="container">
-    <h1>CRIMINAL RECORDS ❤</h1>
+    <h1 id="app-title">REGISTROS ❤</h1>
 
-    <!-- Config Punk -->
+    <!-- Configuración Superior -->
     <div class="settings-section">
-        <div style="display:flex; align-items:center; gap:10px;">
-            <label style="margin:0; color:var(--punk-yellow);">⚡ FONDO:</label>
+        <div style="display:flex; align-items:center; gap:8px;">
+            <label style="margin:0;">🖼 Fondo:</label>
             <input type="file" id="bgInput" accept="image/*" style="display:none;">
-            <button onclick="document.getElementById('bgInput').click()">CARGAR WALLPAPER</button>
-            <input type="checkbox" id="toggleBg" onchange="toggleCustomBg()" style="cursor:pointer; width:16px; height:16px;">
+            <button onclick="document.getElementById('bgInput').click()" style="background:#1e2530; color:white; border:1px solid var(--border-color); padding:5px 10px; border-radius:6px; font-size:11px; cursor:pointer;">Subir Imagen</button>
+            <input type="checkbox" id="toggleBg" onchange="toggleCustomBg()" style="cursor:pointer;">
         </div>
         <div class="backup-btns">
-            <button onclick="exportarDatos()">📥 BACKUP JSON</button>
-            <button onclick="document.getElementById('importInput').click()">📤 INYECTAR</button>
+            <button onclick="exportarDatos()">📥 Guardar Respaldo</button>
+            <button onclick="document.getElementById('importInput').click()">📤 Cargar Respaldo</button>
             <input type="file" id="importInput" accept=".json" style="display:none;" onchange="importarDatos(this)">
         </div>
     </div>
 
-    <!-- Pestañas Con Atributos para Estilos -->
-    <div class="tabs-container">
-        <button class="tab-btn active" data-tab="Gustos" onclick="cambiarPestaña('Gustos')">⚡ FAVORITOS [CYAN]</button>
-        <button class="tab-btn" data-tab="Por Descubrir" onclick="cambiarPestaña('Por Descubrir')">🎬 PLANES [PURPLE]</button>
-        <button class="tab-btn" data-tab="Alertas" onclick="cambiarPestaña('Alertas')">⚠️ DISGUSTOS / NO [PINK]</button>
+    <!-- PESTAÑAS (Botones principales cuyos nombres ahora puedes editar) -->
+    <div class="tabs-container" id="tabsLayout">
+        <button class="tab-btn active" data-tab="seccion1" id="btn-seccion1" onclick="cambiarPestaña('seccion1')">Favoritos</button>
+        <button class="tab-btn" data-tab="seccion2" id="btn-seccion2" onclick="cambiarPestaña('seccion2')">Planes</button>
+        <button class="tab-btn" data-tab="seccion3" id="btn-seccion3" onclick="cambiarPestaña('seccion3')">Alertas / No</button>
     </div>
     
-    <!-- Formulario Extensible -->
+    <!-- Formulario Organizado -->
     <div class="grid-form">
         
         <div class="form-group">
-            <label id="label-dinamico">DATO ACTUAL:</label>
+            <label id="label-dinamico">Tipo de Registro:</label>
             <div class="select-with-btn">
                 <select id="subCategoria">
-                    <!-- JS -->
+                    <!-- Dinámico -->
                 </select>
-                <button class="btn-gear" onclick="toggleManagerPanel()" title="Modificar Opciones">⚙ MODO EDIT</button>
+                <button class="btn-gear" onclick="toggleManagerPanel()">⚙ MODO EDIT</button>
             </div>
         </div>
 
-        <!-- Panel de control de Opciones Custom -->
+        <!-- PANEL DE CONTROL AVANZADO (Edita nombres de pestañas y subcategorías aquí) -->
         <div class="manager-panel" id="managerPanel">
-            <label style="color:var(--punk-yellow);">🔧 INSERTAR NUEVA OPCIÓN:</label>
-            <div style="display:flex; gap:8px; margin-top:5px;">
-                <input type="text" id="nuevaOptInput" placeholder="Ej: Ropa, Fobias, Marcas...">
-                <button onclick="agregarNuevaOpcion()" style="background:var(--punk-cyan); color:#000; border:none; padding:0 15px; font-weight:bold; cursor:pointer;">+</button>
+            <!-- 1. Editar Nombre de la pestaña actual -->
+            <div class="manager-row">
+                <label style="color: #fff;">✏️ Cambiar nombre a esta Pestaña:</label>
+                <div style="display:flex; gap:8px; margin-top:4px;">
+                    <input type="text" id="editNombreTabInput" placeholder="Nuevo nombre de la pestaña...">
+                    <button onclick="renombrarPestañaActual()" style="background:#22c55e; color:white; border:none; padding:0 12px; border-radius:6px; font-weight:bold; cursor:pointer;">Guardar Nombre</button>
+                </div>
             </div>
-            <div class="manager-list" id="managerList">
-                <!-- JS -->
+
+            <!-- 2. Administrar Subcategorías -->
+            <div>
+                <label style="color: #fff;">🔧 Añadir Opción Desplegable:</label>
+                <div style="display:flex; gap:8px; margin-top:4px;">
+                    <input type="text" id="nuevaOptInput" placeholder="Ej: Ropa, Dulces, Series...">
+                    <button onclick="agregarNuevaOpcion()" style="background:#fff; color:#000; border:none; padding:0 15px; border-radius:6px; font-weight:bold; cursor:pointer;">+</button>
+                </div>
+                <div class="manager-list" id="managerList">
+                    <!-- Lista con botones X -->
+                </div>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="obsesion">NIVEL DE OBSESIÓN / INTERÉS:</label>
+            <label for="obsesion">Nivel de Importancia / Interés:</label>
             <select id="obsesion">
-                <option value="⚡ Dato casual / X">⚡ Dato casual / X</option>
-                <option value="⚡⚡ Le gusta bastante">⚡⚡ Le gusta bastante</option>
-                <option value="⚡⚡⚡ OBSESIÓN SEVERA" selected>⚡⚡⚡ OBSESIÓN SEVERA</option>
-                <option value="💀 ADICCIÓN TOTAL / CRÍTICO">💀 ADICCIÓN TOTAL / CRÍTICO</option>
+                <option value="⚡ Casual / Detalle Simple">⚡ Casual / Detalle Simple</option>
+                <option value="⭐⭐ Le gusta bastante">⭐⭐ Le gusta bastante</option>
+                <option value="🔥🔥 Interés Extremo" selected>🔥🔥 Interés Extremo</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="mood">ESTADO MENTAL EN EL MOMENTO:</label>
+            <label for="mood">Humor / Contexto:</label>
             <select id="mood">
-                <option value="⚡ Chill / Feliz">⚡ Chill / Feliz</option>
-                <option value="🍕 Con Hambre / Antojo">🍕 Con Hambre / Antojo</option>
-                <option value="⚡ Casual / Hablando de la nada">⚡ Casual / Hablando de la nada</option>
-                <option value="🔥 Enojada / Rant">🔥 Enojada / Rant</option>
+                <option value="😊 Feliz / Tranquila">😊 Feliz / Tranquila</option>
+                <option value="🍕 Con Antojo">🍕 Con Antojo</option>
+                <option value="🥱 Charla Casual">🥱 Charla Casual</option>
+                <option value="🔥 Molesta / Queja">🔥 Molesta / Queja</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="imagenInput">📸 DETONANTE VISUAL (EVIDENCIA - OPT):</label>
-            <input type="file" id="imagenInput" accept="image/*" style="font-size:11px;">
+            <label for="imagenInput">📸 Foto / Evidencia (Opcional):</label>
+            <input type="file" id="imagenInput" accept="image/*" style="font-size:12px; padding:10px;">
         </div>
 
         <div class="form-group full-width">
-            <label for="detalle">REGISTRO DE HECHOS (DATO EXACTO):</label>
-            <textarea id="detalle" rows="2" placeholder="Pon la data dura aquí..."></textarea>
+            <label for="detalle">Detalle del registro (¿Qué pasó o qué te dijo?):</label>
+            <textarea id="detalle" rows="2" placeholder="Escribe el dato aquí..."></textarea>
         </div>
 
-        <button class="btn-guardar" onclick="procesarYGuardar()">INYECTAR EN MEMORIA CORE</button>
+        <button class="btn-guardar" onclick="procesarYGuardar()">Guardar Datos Core</button>
     </div>
 
     <!-- Buscador Integrado -->
-    <div style="margin: 25px 0 15px 0;">
-        <input type="text" id="buscador" onkeyup="filtrarNotas()" placeholder="🔍 ESCANEAR PALABRAS CLAVE EN ESTA SECCIÓN..." style="width:100%; box-sizing:border-box; border:2px solid var(--border-punk);">
+    <div style="margin: 20px 0 10px 0;">
+        <input type="text" id="buscador" onkeyup="filtrarNotas()" placeholder="🔍 Buscar palabras clave en esta sección..." style="width:100%; box-sizing:border-box;">
     </div>
 
-    <!-- Feed de Notas Guardadas -->
+    <!-- Muestra de Tarjetas -->
     <div class="notas-grid" id="listaNotas"></div>
 </div>
 
 <script>
-    const opcionesPredeterminadas = {
-        "Gustos": ["Comida 🍔", "Música 🎵", "Color 🎨", "Ropa 👗", "Dulces 🍫"],
-        "Por Descubrir": ["Pelis / Series 🍿", "Libros 📚", "Lugares ✈️", "Planes 🧗"],
-        "Alertas": ["Disgustos Mal 🤢", "Alergias 💊", "Fobias 🕷️", "Fechas Peligro 📅"]
+    // Configuración inicial por defecto
+    const estructuraInicial = {
+        nombresTabs: {
+            seccion1: "Favoritos",
+            seccion2: "Planes",
+            seccion3: "Alertas / No"
+        },
+        opciones: {
+            seccion1: ["Comida 🍔", "Música 🎵", "Color 🎨", "Dulces 🍫"],
+            seccion2: ["Pelis / Series 🍿", "Lugares por ir ✈️", "Planes juntos 🧗"],
+            seccion3: ["Disgustos 🤢", "Alergias 💊", "Fechas Clave 📅"]
+        }
     };
 
-    let diccionarioOpciones = {};
-    let seccionActual = "Gustos";
+    let appData = {};
+    let seccionActual = "seccion1";
 
     document.addEventListener("DOMContentLoaded", () => {
-        const opcionesGuardadas = localStorage.getItem("diccionarioOpcionesPunk");
-        if (opcionesGuardadas) {
-            diccionarioOpciones = JSON.parse(opcionesGuardadas);
+        const datosGuardados = localStorage.getItem("appDataConfigurable");
+        if (datosGuardados) {
+            appData = JSON.parse(datosGuardados);
         } else {
-            diccionarioOpciones = JSON.parse(JSON.stringify(opcionesPredeterminadas));
-            localStorage.setItem("diccionarioOpcionesPunk", JSON.stringify(diccionarioOpciones));
+            appData = JSON.parse(JSON.stringify(estructuraInicial));
+            localStorage.setItem("appDataConfigurable", JSON.stringify(appData));
         }
 
+        renderizarNombresPestañas();
         inicializarSelectores();
         mostrarNotas();
         loadCustomBg();
     });
 
-    function cambiarPestaña(nuevaSeccion) {
-        seccionActual = nuevaSeccion;
+    // Actualiza los textos de los botones superiores según lo que hayas editado
+    function renderizarNombresPestañas() {
+        document.getElementById("btn-seccion1").textContent = appData.nombresTabs.seccion1;
+        document.getElementById("btn-seccion2").textContent = appData.nombresTabs.seccion2;
+        document.getElementById("btn-seccion3").textContent = appData.nombresTabs.seccion3;
+    }
+
+    function cambiarPestaña(idSeccion) {
+        seccionActual = idSeccion;
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
+        document.getElementById(`btn-${idSeccion}`).classList.add('active');
         
         document.getElementById("managerPanel").style.display = "none";
 
@@ -443,9 +451,11 @@
         const subCatSelect = document.getElementById("subCategoria");
         subCatSelect.innerHTML = "";
         
-        document.getElementById("label-dinamico").textContent = `CATEGORÍAS [${seccionActual}]:`;
+        const nombreVisibleTab = appData.nombresTabs[seccionActual];
+        document.getElementById("label-dinamico").textContent = `Categorías de [${nombreVisibleTab}]:`;
+        document.getElementById("editNombreTabInput").value = nombreVisibleTab;
 
-        diccionarioOpciones[seccionActual].forEach(opt => {
+        appData.opciones[seccionActual].forEach(opt => {
             let option = document.createElement("option");
             option.value = opt;
             option.textContent = opt;
@@ -460,11 +470,25 @@
         panel.style.display = (panel.style.display === "block") ? "none" : "block";
     }
 
+    // RENOMBRAR LA PESTAÑA DESDE LA INTERFAZ
+    function renombrarPestañaActual() {
+        const input = document.getElementById("editNombreTabInput");
+        const nuevoNombre = input.value.trim();
+        if (nuevoNombre === "") { alert("El nombre no puede estar vacío."); return; }
+
+        appData.nombresTabs[seccionActual] = nuevoNombre;
+        localStorage.setItem("appDataConfigurable", JSON.stringify(appData));
+        
+        renderizarNombresPestañas();
+        inicializarSelectores();
+        alert(`Pestaña renombrada a "${nuevoNombre}"`);
+    }
+
     function actualizarListaPanelManager() {
         const listContainer = document.getElementById("managerList");
         listContainer.innerHTML = "";
 
-        diccionarioOpciones[seccionActual].forEach((opt, index) => {
+        appData.opciones[seccionActual].forEach((opt, index) => {
             listContainer.innerHTML += `
                 <div class="manager-item">
                     <span>${opt}</span>
@@ -479,18 +503,18 @@
         const valor = input.value.trim();
         if (valor === "") return;
 
-        if (diccionarioOpciones[seccionActual].includes(valor)) { return; }
+        if (appData.opciones[seccionActual].includes(valor)) { return; }
 
-        diccionarioOpciones[seccionActual].push(valor);
-        localStorage.setItem("diccionarioOpcionesPunk", JSON.stringify(diccionarioOpciones));
+        appData.opciones[seccionActual].push(valor);
+        localStorage.setItem("appDataConfigurable", JSON.stringify(appData));
         
         input.value = "";
         inicializarSelectores();
     }
 
     function eliminarOpcion(index) {
-        diccionarioOpciones[seccionActual].splice(index, 1);
-        localStorage.setItem("diccionarioOpcionesPunk", JSON.stringify(diccionarioOpciones));
+        appData.opciones[seccionActual].splice(index, 1);
+        localStorage.setItem("appDataConfigurable", JSON.stringify(appData));
         inicializarSelectores();
     }
 
@@ -501,7 +525,7 @@
         const detalle = document.getElementById("detalle").value;
         const archivoImagen = document.getElementById("imagenInput").files[0];
 
-        if (!subCategoria || detalle.trim() === "") { return; }
+        if (!subCategoria || detalle.trim() === "") { alert("Llena los campos obligatorios."); return; }
 
         if (archivoImagen) {
             const lector = new FileReader();
@@ -515,7 +539,7 @@
     function guardarNotaFinal(subCat, obs, md, det, imgBase64) {
         const nuevaNota = {
             id: Date.now(),
-            categoria: seccionActual,
+            seccionId: seccionActual, // Se liga al identificador interno permanente
             subCategoria: subCat,
             obsesion: obs,
             mood: md,
@@ -524,9 +548,9 @@
             fecha: new Date().toLocaleDateString('es-MX', { month: 'short', day: 'numeric' })
         };
 
-        let notas = JSON.parse(localStorage.getItem("misNotasPunk")) || [];
+        let notas = JSON.parse(localStorage.getItem("misNotasConfigurables")) || [];
         notas.push(nuevaNota);
-        localStorage.setItem("misNotasPunk", JSON.stringify(notas));
+        localStorage.setItem("misNotasConfigurables", JSON.stringify(notas));
         
         document.getElementById("detalle").value = "";
         document.getElementById("imagenInput").value = "";
@@ -537,35 +561,29 @@
         const lista = document.getElementById("listaNotas");
         lista.innerHTML = "";
         
-        let notas = JSON.parse(localStorage.getItem("misNotasPunk")) || [];
-        let notasFiltradas = notas.filter(n => n.categoria === seccionActual);
+        let notas = JSON.parse(localStorage.getItem("misNotasConfigurables")) || [];
+        let notasFiltradas = notas.filter(n => n.seccionId === seccionActual);
 
         if (notasFiltradas.length === 0) {
-            lista.innerHTML = `<p style='color:var(--text-muted); text-align:center; grid-column:span 2; padding:30px; border:2px dashed #222;'>SIN REGISTROS EN ESTA ÁREA</p>`;
+            lista.innerHTML = `<p style='color:var(--text-muted); text-align:center; grid-column:span 2; padding:30px;'>No hay datos guardados aquí todavía.</p>`;
             return;
         }
-
-        // ASIGNACIÓN DE COLOR SEGÚN LA SECCIÓN EN LA QUE ESTÁ GUARDADA
-        let claseColorSeccion = "";
-        if (seccionActual === "Gustos") claseColorSeccion = "card-gustos";
-        if (seccionActual === "Por Descubrir") claseColorSeccion = "card-descubrir";
-        if (seccionActual === "Alertas") claseColorSeccion = "card-alertas";
 
         notasFiltradas.reverse().forEach(nota => {
             let imgHtml = nota.imagen ? `<img src="${nota.imagen}">` : '';
             
             lista.innerHTML += `
-                <div class="nota-card item-nota ${claseColorSeccion}" data-texto="${nota.detalle.toLowerCase()} ${nota.subCategoria.toLowerCase()}">
+                <div class="nota-card item-nota card-${seccionActual}" data-texto="${nota.detalle.toLowerCase()} ${nota.subCategoria.toLowerCase()}">
                     <button class="btn-borrar" onclick="borrarNota(${nota.id})">×</button>
                     <div>
-                        <p style="margin:5px 0 15px 0; font-size:15px; line-height:1.5; font-weight:bold; letter-spacing: -0.5px;">${nota.text = nota.detalle}</p>
+                        <p style="margin:5px 0 15px 0; font-size:14px; line-height:1.5; font-weight:500;">${nota.detalle}</p>
                         ${imgHtml}
                     </div>
                     <div class="sub-info">
-                        <span>TAG: ${nota.subCategoria}</span>
-                        <span>LVL: ${nota.obsesion}</span>
-                        <span>MOOD: ${nota.mood}</span>
-                        <span>DATE: ${nota.fecha}</span>
+                        <span>📁 ${nota.subCategoria}</span>
+                        <span>${nota.obsesion}</span>
+                        <span>${nota.mood}</span>
+                        <span>📅 ${nota.fecha}</span>
                     </div>
                 </div>
             `;
@@ -581,15 +599,15 @@
     }
 
     function borrarNota(id) {
-        if(confirm("¿BORRAR REGISTRO DE LA BASE DE DATOS?")) {
-            let notas = JSON.parse(localStorage.getItem("misNotasPunk")) || [];
+        if(confirm("¿Eliminar este registro permanente?")) {
+            let notas = JSON.parse(localStorage.getItem("misNotasConfigurables")) || [];
             notas = notas.filter(nota => nota.id !== id);
-            localStorage.setItem("misNotasPunk", JSON.stringify(notas));
+            localStorage.setItem("misNotasConfigurables", JSON.stringify(notas));
             mostrarNotas();
         }
     }
 
-    // --- Controladores de Fondo ---
+    // --- Wallpaper Backend ---
     const bgInput = document.getElementById('bgInput');
     const bodyBgLayer = document.getElementById('body-bg-layer');
     const toggleBg = document.getElementById('toggleBg');
@@ -599,10 +617,10 @@
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                localStorage.setItem('customBgPunk', e.target.result);
+                localStorage.setItem('customBgConfig', e.target.result);
                 applyBgImage(e.target.result);
                 toggleBg.checked = true;
-                localStorage.setItem('useCustomBgPunk', 'true');
+                localStorage.setItem('useCustomBgConf', 'true');
             }
             reader.readAsDataURL(file);
         }
@@ -615,32 +633,33 @@
 
     function toggleCustomBg() {
         if (toggleBg.checked) {
-            const storedImg = localStorage.getItem('customBgPunk');
-            if (storedImg) { bodyBgLayer.style.display = 'block'; localStorage.setItem('useCustomBgPunk', 'true'); }
-            else { toggleBg.checked = false; }
+            const storedImg = localStorage.getItem('customBgConfig');
+            if (storedImg) { bodyBgLayer.style.display = 'block'; localStorage.setItem('useCustomBgConf', 'true'); }
+            else { alert("Primero sube una imagen."); toggleBg.checked = false; }
         } else {
-            bodyBgLayer.style.display = 'none'; localStorage.setItem('useCustomBgPunk', 'false');
+            bodyBgLayer.style.display = 'none'; localStorage.setItem('useCustomBgConf', 'false');
         }
     }
 
     function loadCustomBg() {
-        const storedImg = localStorage.getItem('customBgPunk');
-        const useCustom = localStorage.getItem('useCustomBgPunk');
+        const storedImg = localStorage.getItem('customBgConfig');
+        const useCustom = localStorage.getItem('useCustomBgConf');
         if (storedImg) applyBgImage(storedImg);
         if (useCustom === 'true') { toggleBg.checked = true; bodyBgLayer.style.display = 'block'; }
         else { toggleBg.checked = false; bodyBgLayer.style.display = 'none'; }
     }
 
-    // --- Backups ---
+    // --- Respaldos Avanzados (Guarda notas + nombres editados + opciones) ---
     function exportarDatos() {
-        const notas = localStorage.getItem("misNotasPunk") || "[]";
-        const opciones = localStorage.getItem("diccionarioOpcionesPunk") || "{}";
-        const empaquetado = { notas: JSON.parse(notas), opciones: JSON.parse(opciones) };
-        const blob = new Blob([JSON.stringify(empaquetado)], { type: "application/json" });
+        const notas = localStorage.getItem("misNotasConfigurables") || "[]";
+        const configuracion = localStorage.getItem("appDataConfigurable") || "{}";
+        const payload = { notas: JSON.parse(notas), configuracion: JSON.parse(configuracion) };
+        
+        const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `PUNK_BACKUP.json`;
+        a.download = `backup_sistema_datos.json`;
         a.click();
     }
 
@@ -650,16 +669,17 @@
         const lector = new FileReader();
         lector.onload = function(e) {
             try {
-                const empaquetado = JSON.parse(e.target.result);
-                if (empaquetado.notas && empaquetado.opciones) {
-                    localStorage.setItem("misNotasPunk", JSON.stringify(empaquetado.notas));
-                    localStorage.setItem("diccionarioOpcionesPunk", JSON.stringify(empaquetado.opciones));
-                    diccionarioOpciones = empaquetado.opciones;
+                const payload = JSON.parse(e.target.result);
+                if (payload.notas && payload.configuracion) {
+                    localStorage.setItem("misNotasConfigurables", JSON.stringify(payload.notas));
+                    localStorage.setItem("appDataConfigurable", JSON.stringify(payload.configuracion));
+                    appData = payload.configuracion;
+                    renderizarNombresPestañas();
                     inicializarSelectores();
                     mostrarNotas();
-                    alert("DATOS INYECTADOS CORRECTAMENTE OS");
+                    alert("¡Todo importado y configurado con éxito!");
                 }
-            } catch (err) { alert("ERROR DE LECTURA."); }
+            } catch (err) { alert("Error en el archivo."); }
         };
         lector.readAsText(archivo);
     }
