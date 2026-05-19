@@ -462,7 +462,8 @@
     document.addEventListener("DOMContentLoaded", () => {
         const localConfig = localStorage.getItem("masterAppConfig");
         if (localConfig) {
-            appConfig = JSON.parse(localConfig);
+            // OPTIMIZACIÓN 1: Merge seguro para heredar propiedades nuevas por defecto si actualizas la App
+            appConfig = Object.assign({}, configPorDefecto, JSON.parse(localConfig));
         } else {
             appConfig = JSON.parse(JSON.stringify(configPorDefecto));
             localStorage.setItem("masterAppConfig", JSON.stringify(appConfig));
@@ -654,7 +655,8 @@
             return;
         }
 
-        notasFiltradas.reverse().forEach(nota => {
+        // OPTIMIZACIÓN 2: Uso seguro del desorden para no mutar destructivamente el array original
+        [...notasFiltradas].reverse().forEach(nota => {
             let imgHtml = nota.imagen ? `<img src="${nota.imagen}">` : '';
             
             lista.innerHTML += `
