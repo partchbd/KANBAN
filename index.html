@@ -6,13 +6,14 @@
     <title>Mi Amor ❤</title>
     <style>
         :root {
-            --bg-default: linear-gradient(135deg, #0f172a, #1e293b);
-            --card-bg: rgba(255, 255, 255, 0.08);
-            --card-border: rgba(255, 255, 255, 0.1);
+            --bg-default: linear-gradient(135deg, #070b19, #10172a);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.08);
             --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #f472b6; /* Un rosa suave */
-            --input-bg: rgba(0, 0, 0, 0.4);
+            --text-muted: #64748b;
+            --accent: #f472b6;
+            --input-bg: rgba(0, 0, 0, 0.5);
+            --neon-shadow: 0 0 15px rgba(244, 114, 182, 0.3);
         }
 
         body {
@@ -28,7 +29,6 @@
             position: relative;
         }
 
-        /* Capa para el fondo con imagen personalizada */
         #body-bg-layer {
             position: fixed;
             top: 0;
@@ -37,103 +37,180 @@
             height: 100%;
             background-size: cover;
             background-position: center;
-            filter: blur(15px); /* Desenfoque sutil */
-            opacity: 1.0; /* Ajusta la opacidad para que no compita con el texto */
-            z-index: -1; /* Envía la imagen detrás de todo */
-            display: none; /* Oculto por defecto */
+            filter: blur(20px);
+            opacity: 0.35;
+            z-index: -1;
+            display: none;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
             background: var(--card-bg);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             padding: 30px;
-            border-radius: 20px;
+            border-radius: 24px;
             border: 1px solid var(--card-border);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             box-sizing: border-box;
-            z-index: 1; /* Asegura que el contenido esté al frente */
+            z-index: 1;
         }
 
         h1 {
             text-align: center;
             margin-top: 0;
-            font-weight: 700;
-            font-size: 2.5rem;
+            font-weight: 800;
+            font-size: 2.8rem;
             color: var(--accent);
-            text-shadow: 0 0 10px rgba(244, 114, 182, 0.3);
+            text-shadow: var(--neon-shadow);
+            letter-spacing: -0.5px;
         }
 
+        /* Tabs Pro */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            color: #94a3b8;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.25s ease;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background: var(--accent);
+            color: #0f172a;
+            border-color: var(--accent);
+            box-shadow: var(--neon-shadow);
+        }
+
+        /* Layout Formulario */
         .grid-form {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 16px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 24px;
+            border-radius: 20px;
+            border: 1px solid var(--card-border);
+            margin-bottom: 20px;
         }
 
-        @media (max-width: 600px) {
-            .grid-form { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 600px) { .grid-form { grid-template-columns: 1fr; } }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 12px;
-        }
-
-        .form-group.full-width {
-            grid-column: span 2;
-        }
-        @media (max-width: 600px) {
-            .form-group.full-width { grid-column: span 1; }
-        }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group.full-width { grid-column: span 2; }
+        @media (max-width: 600px) { .form-group.full-width { grid-column: span 1; } }
 
         label {
-            margin-bottom: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #94a3b8;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         input, select, textarea {
-            padding: 12px;
+            padding: 14px;
             border: 1px solid var(--card-border);
             background-color: var(--input-bg);
             color: var(--text-main);
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 14px;
-            transition: border-color 0.3s;
+            transition: all 0.2s ease;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--accent);
+            box-shadow: 0 0 8px rgba(244, 114, 182, 0.2);
+        }
+
+        /* Selector dinámico con botón de gestión */
+        .select-with-btn {
+            display: flex;
+            gap: 8px;
+        }
+        .select-with-btn select { flex: 1; }
+        .btn-gear {
+            background: #334155;
+            border: 1px solid var(--card-border);
+            color: white;
+            border-radius: 12px;
+            padding: 0 15px;
+            cursor: pointer;
+            font-size: 16px;
         }
 
         button.btn-guardar {
             grid-column: span 2;
-            padding: 15px;
+            padding: 16px;
             background-color: var(--accent);
-            color: #1e293b;
+            color: #0f172a;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 10px;
+            transition: all 0.2s ease;
         }
         @media (max-width: 600px) { button.btn-guardar { grid-column: span 1; } }
+        button.btn-guardar:hover { background-color: #fca5a5; transform: translateY(-1px); }
 
-        button.btn-guardar:hover {
-            background-color: #fca5a5;
+        /* Panel de Gestión de Opciones (Oculto por defecto) */
+        .manager-panel {
+            display: none;
+            grid-column: span 2;
+            background: rgba(244, 114, 182, 0.05);
+            border: 1px dashed var(--accent);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 10px;
+            animation: slideDown 0.3s ease;
+        }
+        @media (max-width: 600px) { .manager-panel { grid-column: span 1; } }
+
+        .manager-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .manager-item {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--card-border);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .manager-item span.delete-opt {
+            color: #ef4444;
+            cursor: pointer;
+            font-weight: bold;
         }
 
-        .search-box {
-            margin: 30px 0 20px 0;
-        }
-
+        /* Estilos de las Tarjetas */
         .notas-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -143,71 +220,82 @@
         @media (max-width: 768px) { .notas-grid { grid-template-columns: 1fr; } }
 
         .nota-card {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(15, 23, 42, 0.6);
             border: 1px solid var(--card-border);
-            padding: 20px;
-            border-radius: 14px;
+            padding: 22px;
+            border-radius: 18px;
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
 
         .nota-card img {
             width: 100%;
-            max-height: 200px;
+            max-height: 240px;
             object-fit: cover;
-            border-radius: 8px;
-            margin-top: 10px;
+            border-radius: 12px;
+            margin-top: 15px;
         }
 
         .btn-borrar {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 18px;
+            right: 18px;
             background: none;
             border: none;
             color: #ef4444;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 20px;
         }
-
-        .badge-cat {
-            font-size: 11px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: 600;
-            text-transform: uppercase;
-            width: max-content;
-            margin-bottom: 8px;
-        }
-        .cat-gustos { background: rgba(244, 114, 182, 0.15); color: var(--accent); border: 1px solid var(--accent); }
-        .cat-descubrir { background: rgba(147, 197, 253, 0.15); color: #93c5fd; border: 1px solid #93c5fd; }
-        .cat-alertas { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid #fca5a5; }
 
         .sub-info {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 5px;
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 15px;
             display: flex;
-            gap: 10px;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .sub-info span {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.02);
         }
 
-        /* Sección de foto de fondo */
+        /* Top Bar Settings */
         .settings-section {
             display: flex;
             align-items: center;
             justify-content: space-between;
             background: rgba(0, 0, 0, 0.3);
-            padding: 10px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            padding: 12px 20px;
+            border-radius: 14px;
+            margin-bottom: 25px;
             border: 1px solid var(--card-border);
+            width: 100%;
+            box-sizing: border-box;
+            gap: 10px;
+            flex-wrap: wrap;
         }
-        .settings-controls {
-            display: flex;
-            gap: 15px;
-            align-items: center;
+        .backup-btns button {
+            background: #1e293b;
+            color: #e2e8f0;
+            border: 1px solid var(--card-border);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-left: 5px;
+            font-weight: 600;
+        }
+        .backup-btns button:hover { background: #334155; }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -218,101 +306,234 @@
 <div class="container">
     <h1>Mi Amor ❤</h1>
 
+    <!-- Configuración Superior -->
     <div class="settings-section">
-        <label>🖼 Foto de Fondo Custom</label>
-        <div class="settings-controls">
-            <input type="file" id="bgInput" accept="image/*" style="width: auto; padding: 5px; font-size: 12px;">
-            <div style="font-size: 12px;">
-                <label for="toggleBg" style="display:inline; text-transform:none; font-weight: normal; margin-right:5px;">Activar:</label>
-                <input type="checkbox" id="toggleBg" onchange="toggleCustomBg()" style="width:auto; cursor:pointer;">
-            </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <label style="margin:0;">🖼 Fondo de Pantalla:</label>
+            <input type="file" id="bgInput" accept="image/*" style="display:none;">
+            <button onclick="document.getElementById('bgInput').click()" style="background:#334155; color:white; border:none; padding:6px 12px; border-radius:8px; font-size:11px; cursor:pointer; font-weight:600;">Elegir Foto</button>
+            <input type="checkbox" id="toggleBg" onchange="toggleCustomBg()" style="cursor:pointer; width:16px; height:16px;">
+        </div>
+        <div class="backup-btns">
+            <button onclick="exportarDatos()">📥 Clonar Datos (Backup)</button>
+            <button onclick="document.getElementById('importInput').click()">📤 Inyectar Backup</button>
+            <input type="file" id="importInput" accept=".json" style="display:none;" onchange="importarDatos(this)">
         </div>
     </div>
+
+    <!-- Pestañas Principales (Secciones) -->
+    <div class="tabs-container">
+        <button class="tab-btn active" onclick="cambiarPestaña('Gustos')">❤️ Sus Favoritos</button>
+        <button class="tab-btn" onclick="cambiarPestaña('Por Descubrir')">🎬 Planes / Recomendaciones</button>
+        <button class="tab-btn" onclick="cambiarPestaña('Alertas')">⚠️ Cosas que No</button>
+    </div>
     
+    <!-- Formulario Dinámico Extensible -->
     <div class="grid-form">
+        
         <div class="form-group">
-            <label for="categoria">¿Qué tipo de detalle?</label>
-            <select id="categoria" onchange="adaptarFormulario()">
-                <option value="Gustos">Favs (Clima, comida, color...)</option>
-                <option value="Por Descubrir">Planes, series o pelis x ver</option>
-                <option value="Alertas">Cosas que NO (Alergias, disgustos...)</option>
+            <label id="label-dinamico">Opciones de la Sección:</label>
+            <div class="select-with-btn">
+                <select id="subCategoria">
+                    <!-- Controlado por JS -->
+                </select>
+                <button class="btn-gear" onclick="toggleManagerPanel()" title="Añadir o quitar opciones">⚙</button>
+            </div>
+        </div>
+
+        <!-- Panel de control de Opciones Custom (Oculto por defecto) -->
+        <div class="manager-panel" id="managerPanel">
+            <label style="color:var(--accent);">🛠 Añadir nueva opción a esta pestaña:</label>
+            <div style="display:flex; gap:8px; margin-top:5px;">
+                <input type="text" id="nuevaOptInput" placeholder="Ej: Pasatiempos, Alergias, Series...">
+                <button onclick="agregarNuevaOpcion()" style="background:var(--accent); color:#0f172a; border:none; padding:0 15px; border-radius:10px; font-weight:bold; cursor:pointer;">+</button>
+            </div>
+            <div class="manager-list" id="managerList">
+                <!-- Lista de opciones con botón X para eliminar -->
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="obsesion">Nivel de Obsesión / Interés:</label>
+            <select id="obsesion">
+                <option value="🔥">🔥 Dato casual / Le da igual</option>
+                <option value="🔥🔥">🔥🔥 Le gusta bastante</option>
+                <option value="🔥🔥🔥" selected>🔥🔥🔥 Le encanta demasiado</option>
+                <option value="🔥🔥🔥🔥">🔥🔥🔥🔥 Locura / Fanática extrema</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="subCategoria">Especifica:</label>
-            <select id="subCategoria">
-                </select>
+            <label for="mood">Estado de ánimo en el momento:</label>
+            <select id="mood">
+                <option value="😊 Feliz / Chill">😊 Feliz / Chill</option>
+                <option value="🍕 Con antojo / Hambre">🍕 Con antojo / Hambre</option>
+                <option value="🥱 Distraída / Casual">🥱 Distraída / Casual</option>
+                <option value="😡 Enojada / Quejándose">😡 Enojada / Quejándose</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="imagenInput">📸 Adjuntar Imagen / Evidencia (Opcional):</label>
+            <input type="file" id="imagenInput" accept="image/*" style="font-size:11px; padding:10px;">
         </div>
 
         <div class="form-group full-width">
-            <label for="detalle">Cuéntame el detalle:</label>
-            <textarea id="detalle" rows="2" placeholder="Escribe aquí..."></textarea>
+            <label for="detalle">¿Qué te dijo, qué viste o qué quieres recordar?:</label>
+            <textarea id="detalle" rows="2" placeholder="Escribe el dato exacto..."></textarea>
         </div>
 
-        <div class="form-group full-width">
-            <label for="imagenInput">📸 Pon una foto de referencia (opcional):</label>
-            <input type="file" id="imagenInput" accept="image/*">
-        </div>
-
-        <button class="btn-guardar" onclick="procesarYGuardar()">Guardar Detalle ❤</button>
+        <button class="btn-guardar" onclick="procesarYGuardar()">Almacenar Memoria ❤</button>
     </div>
 
-    <div class="search-box">
-        <label for="buscador">🔍 Busca rápido:</label>
-        <input type="text" id="buscador" onkeyup="filtrarNotas()" placeholder="Ej: clima, rosa, alergia...">
+    <!-- Buscador Integrado -->
+    <div style="margin: 25px 0 15px 0;">
+        <input type="text" id="buscador" onkeyup="filtrarNotas()" placeholder="🔍 Filtrar registros de esta pestaña instantáneamente..." style="width:100%; box-sizing:border-box;">
     </div>
 
+    <!-- Feed de Notas Guardadas -->
     <div class="notas-grid" id="listaNotas"></div>
 </div>
 
 <script>
-    const subCategoriasPorDefecto = {
-        "Gustos": ["Clima ❄️/☀️", "Comida 🍔", "Color 🎨", "Música 🎵", "Ropa 👗", "Hobbies 🎮"],
-        "Por Descubrir": ["Pelis / Series 🍿", "Libros 📚", "Viajes / Lugares ✈️", "Planes 🧗"],
-        "Alertas": ["Disgustos / Odia 🤢", "Alergias 💊", "Fechas Clave 📅"]
+    // Configuración base por defecto que se guardará y cargará dinámicamente desde el LocalStorage
+    const opcionesPredeterminadas = {
+        "Gustos": ["Clima ❄️/☀️", "Comida 🍔", "Color 🎨", "Música 🎵", "Estilo/Ropa 👗", "Dulces 🍫"],
+        "Por Descubrir": ["Pelis / Series 🍿", "Libros 📚", "Lugares por ir ✈️", "Planes juntos 🧗"],
+        "Alertas": ["Disgustos 🤢", "Alergias 💊", "Fechas Clave 📅"]
     };
 
+    let diccionarioOpciones = {};
+    let seccionActual = "Gustos";
+
     document.addEventListener("DOMContentLoaded", () => {
-        adaptarFormulario();
+        // Cargar las opciones guardadas por el usuario o usar las predeterminadas
+        const opcionesGuardadas = localStorage.getItem("diccionarioOpcionesCustom");
+        if (opcionesGuardadas) {
+            diccionarioOpciones = JSON.parse(opcionesGuardadas);
+        } else {
+            diccionarioOpciones = JSON.parse(JSON.stringify(opcionesPredeterminadas));
+            localStorage.setItem("diccionarioOpcionesCustom", JSON.stringify(diccionarioOpciones));
+        }
+
+        inicializarSelectores();
         mostrarNotas();
-        loadCustomBg(); // Cargar la foto de fondo si ya existe
+        loadCustomBg();
     });
 
-    function adaptarFormulario() {
-        const catPrincipal = document.getElementById("categoria").value;
+    function cambiarPestaña(nuevaSeccion) {
+        seccionActual = nuevaSeccion;
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        // Cerrar panel de configuración si estaba abierto para evitar errores
+        document.getElementById("managerPanel").style.display = "none";
+
+        inicializarSelectores();
+        mostrarNotas();
+    }
+
+    // Rellena el select del formulario con tus opciones personalizadas
+    function inicializarSelectores() {
         const subCatSelect = document.getElementById("subCategoria");
         subCatSelect.innerHTML = "";
-        subCategoriasPorDefecto[catPrincipal].forEach(sub => {
+        
+        document.getElementById("label-dinamico").textContent = `Opciones de la sección [${seccionActual}]:`;
+
+        diccionarioOpciones[seccionActual].forEach(opt => {
             let option = document.createElement("option");
-            option.value = sub;
-            option.textContent = sub;
+            option.value = opt;
+            option.textContent = opt;
             subCatSelect.appendChild(option);
+        });
+
+        actualizarListaPanelManager();
+    }
+
+    // Despliega u oculta la caja para meter/quitar opciones
+    function toggleManagerPanel() {
+        const panel = document.getElementById("managerPanel");
+        panel.style.display = (panel.style.display === "block") ? "none" : "block";
+    }
+
+    // Muestra los botones con X para borrar opciones en caliente
+    function actualizarListaPanelManager() {
+        const listContainer = document.getElementById("managerList");
+        listContainer.innerHTML = "";
+
+        diccionarioOpciones[seccionActual].forEach((opt, index) => {
+            listContainer.innerHTML += `
+                <div class="manager-item">
+                    <span>${opt}</span>
+                    <span class="delete-opt" onclick="eliminarOpcion(${index})">×</span>
+                </div>
+            `;
         });
     }
 
-    function procesarYGuardar() {
-        const categoria = document.getElementById("categoria").value;
-        const subCategoria = document.getElementById("subCategoria").value;
-        const detalle = document.getElementById("detalle").value;
-        const archivoImagen = document.getElementById("imagenInput").files[0];
+    // AGREGA OPCIÓN PROPIA
+    function agregarNuevaOpcion() {
+        const input = document.getElementById("nuevaOptInput");
+        const valor = input.value.trim();
+        if (valor === "") return;
 
-        if (detalle.trim() === "") { alert("Escribe el detalle."); return; }
+        if (diccionarioOpciones[seccionActual].includes(valor)) {
+            alert("Esa opción ya existe.");
+            return;
+        }
 
-        if (archivoImagen) {
-            const lector = new FileReader();
-            lector.onloadend = () => guardarNotaFinal(categoria, subCategoria, detalle, lector.result);
-            lector.readAsDataURL(archivoImagen);
-        } else {
-            guardarNotaFinal(categoria, subCategoria, detalle, null);
+        diccionarioOpciones[seccionActual].push(valor);
+        localStorage.setItem("diccionarioOpcionesCustom", JSON.stringify(diccionarioOpciones));
+        
+        input.value = "";
+        inicializarSelectores();
+    }
+
+    // QUITA OPCIÓN PROPIA
+    function eliminarOpcion(index) {
+        const opcionAEliminar = diccionarioOpciones[seccionActual][index];
+        if (confirm(`¿Quieres eliminar la categoría "${opcionAEliminar}"? (Las notas existentes que usen esta categoría no se borrarán).`)) {
+            diccionarioOpciones[seccionActual].splice(index, 1);
+            localStorage.setItem("diccionarioOpcionesCustom", JSON.stringify(diccionarioOpciones));
+            inicializarSelectores();
         }
     }
 
-    function guardarNotaFinal(cat, subCat, det, imgBase64) {
-        const nuevaNota = { id: Date.now(), categoria: cat, subCategoria: subCat, detalle: det, imagen: imgBase64, fecha: new Date().toLocaleDateString() };
-        let notas = JSON.parse(localStorage.getItem("misNotasAmore")) || [];
+    function procesarYGuardar() {
+        const subCategoria = document.getElementById("subCategoria").value;
+        const obsesion = document.getElementById("obsesion").value;
+        const mood = document.getElementById("mood").value;
+        const detalle = document.getElementById("detalle").value;
+        const archivoImagen = document.getElementById("imagenInput").files[0];
+
+        if (!subCategoria) { alert("Primero crea o selecciona una opción válida."); return; }
+        if (detalle.trim() === "") { alert("Por favor escribe el detalle."); return; }
+
+        if (archivoImagen) {
+            const lector = new FileReader();
+            lector.onloadend = () => guardarNotaFinal(subCategoria, obsesion, mood, detalle, lector.result);
+            lector.readAsDataURL(archivoImagen);
+        } else {
+            guardarNotaFinal(subCategoria, obsesion, mood, detalle, null);
+        }
+    }
+
+    function guardarNotaFinal(subCat, obs, md, det, imgBase64) {
+        const nuevaNota = {
+            id: Date.now(),
+            categoria: seccionActual,
+            subCategoria: subCat,
+            obsesion: obs,
+            mood: md,
+            detalle: det,
+            imagen: imgBase64,
+            fecha: new Date().toLocaleDateString('es-MX', { month: 'long', day: 'numeric' })
+        };
+
+        let notas = JSON.parse(localStorage.getItem("misNotasExtensibles")) || [];
         notas.push(nuevaNota);
-        localStorage.setItem("misNotasAmore", JSON.stringify(notas));
+        localStorage.setItem("misNotasExtensibles", JSON.stringify(notas));
+        
         document.getElementById("detalle").value = "";
         document.getElementById("imagenInput").value = "";
         mostrarNotas();
@@ -321,33 +542,54 @@
     function mostrarNotas() {
         const lista = document.getElementById("listaNotas");
         lista.innerHTML = "";
-        let notas = JSON.parse(localStorage.getItem("misNotasAmore")) || [];
-        if (notas.length === 0) { lista.innerHTML = "<p style='color:var(--text-muted); text-align:center; grid-column:span 2;'>Sin detalles aún.</p>"; return; }
-        notas.reverse().forEach(nota => {
-            let claseEstilo = "cat-gustos";
-            if (nota.categoria === "Por Descubrir") claseEstilo = "cat-descubrir";
-            if (nota.categoria === "Alertas") claseEstilo = "cat-alertas";
+        
+        let notas = JSON.parse(localStorage.getItem("misNotasExtensibles")) || [];
+        let notasFiltradas = notas.filter(n => n.categoria === seccionActual);
+
+        if (notasFiltradas.length === 0) {
+            lista.innerHTML = `<p style='color:var(--text-muted); text-align:center; grid-column:span 2; padding:30px;'>No hay registros guardados en "${seccionActual}".</p>`;
+            return;
+        }
+
+        notasFiltradas.reverse().forEach(nota => {
             let imgHtml = nota.imagen ? `<img src="${nota.imagen}">` : '';
-            lista.innerHTML += `<div class="nota-card item-nota" data-texto="${nota.detalle.toLowerCase()} ${nota.categoria.toLowerCase()} ${nota.subCategoria.toLowerCase()}"> <button class="btn-borrar" onclick="borrarNota(${nota.id})">×</button> <div> <span class="badge-cat ${claseEstilo}">${nota.categoria}</span> <p style="margin:10px 0;">${nota.detalle}</p> ${imgHtml} </div> <div class="sub-info"> <span>📁 ${nota.subCategoria}</span> <span>📅 ${nota.fecha}</span> </div> </div>`;
+            
+            lista.innerHTML += `
+                <div class="nota-card item-nota" data-texto="${nota.detalle.toLowerCase()} ${nota.subCategoria.toLowerCase()}">
+                    <button class="btn-borrar" onclick="borrarNota(${nota.id})">×</button>
+                    <div>
+                        <p style="margin:5px 0 15px 0; font-size:15px; line-height:1.4; font-weight:500;">${nota.detalle}</p>
+                        ${imgHtml}
+                    </div>
+                    <div class="sub-info">
+                        <span>📁 ${nota.subCategoria}</span>
+                        <span>${nota.obsesion}</span>
+                        <span>${nota.mood}</span>
+                        <span>📅 ${nota.fecha}</span>
+                    </div>
+                </div>
+            `;
         });
     }
 
     function filtrarNotas() {
         const query = document.getElementById("buscador").value.toLowerCase();
         const items = document.querySelectorAll(".item-nota");
-        items.forEach(item => { item.style.display = item.getAttribute("data-texto").includes(query) ? "flex" : "none"; });
+        items.forEach(item => {
+            item.style.display = item.getAttribute("data-texto").includes(query) ? "flex" : "none";
+        });
     }
 
     function borrarNota(id) {
-        if(confirm("¿Borrar este detalle?")) {
-            let notas = JSON.parse(localStorage.getItem("misNotasAmore")) || [];
+        if(confirm("¿Eliminar este registro?")) {
+            let notas = JSON.parse(localStorage.getItem("misNotasExtensibles")) || [];
             notas = notas.filter(nota => nota.id !== id);
-            localStorage.setItem("misNotasAmore", JSON.stringify(notas));
+            localStorage.setItem("misNotasExtensibles", JSON.stringify(notas));
             mostrarNotas();
         }
     }
 
-    // Funciones para la imagen de fondo personalizada
+    // --- Controladores de Fondo Personalizado ---
     const bgInput = document.getElementById('bgInput');
     const bodyBgLayer = document.getElementById('body-bg-layer');
     const toggleBg = document.getElementById('toggleBg');
@@ -357,11 +599,10 @@
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                const base64Image = e.target.result;
-                localStorage.setItem('customBgImage', base64Image);
-                applyBgImage(base64Image);
-                toggleBg.checked = true; // Activar el toggle automáticamente
-                localStorage.setItem('useCustomBg', 'true');
+                localStorage.setItem('customBgExtensible', e.target.result);
+                applyBgImage(e.target.result);
+                toggleBg.checked = true;
+                localStorage.setItem('useCustomBgExt', 'true');
             }
             reader.readAsDataURL(file);
         }
@@ -374,26 +615,54 @@
 
     function toggleCustomBg() {
         if (toggleBg.checked) {
-            const storedImg = localStorage.getItem('customBgImage');
-            if (storedImg) {
-                bodyBgLayer.style.display = 'block';
-                localStorage.setItem('useCustomBg', 'true');
-            } else {
-                alert("Primero sube una foto.");
-                toggleBg.checked = false;
-            }
+            const storedImg = localStorage.getItem('customBgExtensible');
+            if (storedImg) { bodyBgLayer.style.display = 'block'; localStorage.setItem('useCustomBgExt', 'true'); }
+            else { alert("Primero sube una foto de fondo."); toggleBg.checked = false; }
         } else {
-            bodyBgLayer.style.display = 'none';
-            localStorage.setItem('useCustomBg', 'false');
+            bodyBgLayer.style.display = 'none'; localStorage.setItem('useCustomBgExt', 'false');
         }
     }
 
     function loadCustomBg() {
-        const storedImg = localStorage.getItem('customBgImage');
-        const useCustom = localStorage.getItem('useCustomBg');
-        if (storedImg) { applyBgImage(storedImg); }
+        const storedImg = localStorage.getItem('customBgExtensible');
+        const useCustom = localStorage.getItem('useCustomBgExt');
+        if (storedImg) applyBgImage(storedImg);
         if (useCustom === 'true') { toggleBg.checked = true; bodyBgLayer.style.display = 'block'; }
         else { toggleBg.checked = false; bodyBgLayer.style.display = 'none'; }
+    }
+
+    // --- Controladores de Backups (Respaldos) ---
+    function exportarDatos() {
+        const notas = localStorage.getItem("misNotasExtensibles") || "[]";
+        const opciones = localStorage.getItem("diccionarioOpcionesCustom") || "{}";
+        const empaquetado = { notas: JSON.parse(notas), opciones: JSON.parse(opciones) };
+        
+        const blob = new Blob([JSON.stringify(empaquetado)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `backup_mi_amor_total.json`;
+        a.click();
+    }
+
+    function importarDatos(input) {
+        const archivo = input.files[0];
+        if (!archivo) return;
+        const lector = new FileReader();
+        lector.onload = function(e) {
+            try {
+                const empaquetado = JSON.parse(e.target.result);
+                if (empaquetado.notas && empaquetado.opciones) {
+                    localStorage.setItem("misNotasExtensibles", JSON.stringify(empaquetado.notas));
+                    localStorage.setItem("diccionarioOpcionesCustom", JSON.stringify(empaquetado.opciones));
+                    diccionarioOpciones = empaquetado.opciones;
+                    inicializarSelectores();
+                    mostrarNotas();
+                    alert("¡Todo se restauró perfectamente!");
+                } else { alert("Formato inválido."); }
+            } catch (err) { alert("Error al procesar el archivo."); }
+        };
+        lector.readAsText(archivo);
     }
 </script>
 
