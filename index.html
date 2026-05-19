@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Base de Datos Personal</title>
+    <title>Base de Datos Personal Especial</title>
     <style>
         :root {
-            --bg-default: #0f141c;
-            --card-bg: rgba(22, 28, 38, 0.9);
+            --bg-default: #0a0d14;
+            --card-bg: #111622;
             --border-color: rgba(255, 255, 255, 0.08);
             --text-main: #f1f5f9;
             --text-muted: #64748b;
             
-            /* Colores de acento limpios */
-            --color-gustos: #00ffcc;
-            --color-descubrir: #b55fe6;
-            --color-alertas: #ff3b6f;
+            /* Colores de acento sutiles para los bordes */
+            --color-sec1: #00ffcc;
+            --color-sec2: #b55fe6;
+            --color-sec3: #ff3b6f;
         }
 
         body {
@@ -39,7 +39,7 @@
             background-size: cover;
             background-position: center;
             filter: blur(15px);
-            opacity: 0.3;
+            opacity: 0.25;
             z-index: -1;
             display: none;
         }
@@ -49,22 +49,25 @@
             width: 100%;
             background: var(--card-bg);
             padding: 30px;
-            border-radius: 16px;
+            border-radius: 12px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             box-sizing: border-box;
         }
 
-        h1 {
+        .header-app {
             text-align: center;
-            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        .header-app h1 {
+            margin: 0 0 5px 0;
             font-weight: 700;
             font-size: 2.2rem;
             letter-spacing: -0.5px;
-            color: #fff;
         }
 
-        /* Sistema de Pestañas Dinámicas */
+        /* Tabs */
         .tabs-container {
             display: flex;
             justify-content: center;
@@ -80,31 +83,27 @@
             border: 1px solid var(--border-color);
             color: var(--text-muted);
             padding: 10px 20px;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
             font-size: 13px;
-            transition: transform 0.1s, background 0.2s;
         }
 
-        .tab-btn:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-main);
-        }
+        .tab-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.04); }
 
-        /* Colores asignados dinámicamente cuando están activos */
-        .tab-btn.active[data-tab="seccion1"] { background: var(--color-gustos); color: #000; border-color: var(--color-gustos); }
-        .tab-btn.active[data-tab="seccion2"] { background: var(--color-descubrir); color: #fff; border-color: var(--color-descubrir); }
-        .tab-btn.active[data-tab="seccion3"] { background: var(--color-alertas); color: #fff; border-color: var(--color-alertas); }
+        /* Colores dinámicos de pestañas activas */
+        .tab-btn.active[data-tab="seccion1"] { background: var(--color-sec1); color: #000; border-color: var(--color-sec1); }
+        .tab-btn.active[data-tab="seccion2"] { background: var(--color-sec2); color: #fff; border-color: var(--color-sec2); }
+        .tab-btn.active[data-tab="seccion3"] { background: var(--color-sec3); color: #fff; border-color: var(--color-sec3); }
 
-        /* Formulario */
+        /* Formulario Limpio */
         .grid-form {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
             background: rgba(0, 0, 0, 0.2);
             padding: 20px;
-            border-radius: 12px;
+            border-radius: 10px;
             border: 1px solid var(--border-color);
             margin-bottom: 20px;
         }
@@ -127,28 +126,25 @@
         input, select, textarea {
             padding: 12px;
             border: 1px solid var(--border-color);
-            background-color: #0b0f15;
+            background-color: #080b11;
             color: var(--text-main);
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 14px;
+            font-family: inherit;
         }
 
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #fff;
-        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #fff; }
 
         .select-with-btn { display: flex; gap: 8px; }
         .select-with-btn select { flex: 1; }
         
         .btn-gear {
-            background: #1e2530;
+            background: #1a202c;
             border: 1px solid var(--border-color);
             color: #fff;
-            border-radius: 8px;
+            border-radius: 6px;
             padding: 0 12px;
             cursor: pointer;
-            font-size: 13px;
             font-weight: 600;
         }
         .btn-gear:hover { background: #2d3748; }
@@ -159,50 +155,57 @@
             background-color: #fff;
             color: #000;
             border: none;
-            border-radius: 8px;
-            font-size: 15px;
+            border-radius: 6px;
+            font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            transition: background 0.2s;
+            text-transform: uppercase;
         }
         @media (max-width: 600px) { button.btn-guardar { grid-column: span 1; } }
         button.btn-guardar:hover { background-color: #e2e8f0; }
 
-        /* Panel de Configuración Avanzado (Editor de nombres y opciones) */
-        .manager-panel {
+        /* --- PANEL CONTROL TOTAL INTERFAZ --- */
+        .master-panel {
             display: none;
             grid-column: span 2;
-            background: #131922;
-            border: 1px dashed var(--text-muted);
+            background: #0f131c;
+            border: 1px dashed #334155;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 8px;
             margin-bottom: 10px;
         }
-        @media (max-width: 600px) { .manager-panel { grid-column: span 1; } }
+        @media (max-width: 600px) { .master-panel { grid-column: span 1; } }
 
-        .manager-row {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+        .panel-section {
+            background: rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.03);
         }
+        .panel-section h4 { margin: 0 0 8px 0; font-size: 12px; color: #fff; text-transform: uppercase; }
+
+        .inputs-row-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        @media (max-width: 600px) { .inputs-row-grid { grid-template-columns: 1fr; } }
 
         .manager-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
         .manager-item {
-            background: #1e2530;
+            background: #1a202c;
             border: 1px solid var(--border-color);
-            padding: 5px 10px;
-            border-radius: 6px;
+            padding: 4px 10px;
+            border-radius: 4px;
             font-size: 12px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
-        .manager-item span.delete-opt { color: var(--color-alertas); cursor: pointer; font-weight: bold; }
+        .manager-item span.delete-opt { color: #ff3b6f; cursor: pointer; font-weight: bold; }
 
-        /* Estructura de las Tarjetas */
+        /* Tarjetas */
         .notas-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -212,26 +215,25 @@
         @media (max-width: 768px) { .notas-grid { grid-template-columns: 1fr; } }
 
         .nota-card {
-            background: #141a24;
+            background: #131924;
             padding: 18px;
             border: 1px solid var(--border-color);
-            border-radius: 10px;
+            border-radius: 8px;
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        /* Colores Dinámicos en los Bordes de las Tarjetas */
-        .nota-card.card-seccion1 { border-left: 4px solid var(--color-gustos); }
-        .nota-card.card-seccion2 { border-left: 4px solid var(--color-descubrir); }
-        .nota-card.card-seccion3 { border-left: 4px solid var(--color-alertas); }
+        .nota-card.card-seccion1 { border-left: 4px solid var(--color-sec1); }
+        .nota-card.card-seccion2 { border-left: 4px solid var(--color-sec2); }
+        .nota-card.card-seccion3 { border-left: 4px solid var(--color-sec3); }
 
         .nota-card img {
             width: 100%;
             max-height: 200px;
             object-fit: cover;
-            border-radius: 6px;
+            border-radius: 4px;
             margin-top: 12px;
         }
 
@@ -245,7 +247,7 @@
             cursor: pointer;
             font-size: 18px;
         }
-        .btn-borrar:hover { color: var(--color-alertas); }
+        .btn-borrar:hover { color: #ff3b6f; }
 
         .sub-info {
             font-size: 11px;
@@ -256,20 +258,20 @@
             flex-wrap: wrap;
         }
         .sub-info span {
-            background: rgba(255,255,255,0.03);
-            padding: 3px 8px;
+            background: rgba(255,255,255,0.02);
+            padding: 3px 6px;
             border-radius: 4px;
             border: 1px solid var(--border-color);
         }
 
-        /* Barra Config de Fondo */
+        /* Config de Fondo y Sistema */
         .settings-section {
             display: flex;
             align-items: center;
             justify-content: space-between;
             background: rgba(0, 0, 0, 0.2);
             padding: 10px 16px;
-            border-radius: 10px;
+            border-radius: 8px;
             margin-bottom: 20px;
             border: 1px solid var(--border-color);
             width: 100%;
@@ -278,11 +280,11 @@
             flex-wrap: wrap;
         }
         .backup-btns button {
-            background: #1e2530;
+            background: #1a202c;
             color: var(--text-main);
             border: 1px solid var(--border-color);
             padding: 5px 10px;
-            border-radius: 6px;
+            border-radius: 4px;
             font-size: 11px;
             cursor: pointer;
         }
@@ -294,83 +296,114 @@
     <div id="body-bg-layer"></div>
 
 <div class="container">
-    <h1 id="app-title">REGISTROS ❤</h1>
+    <div class="header-app">
+        <h1 id="app-title">REGISTROS CORE</h1>
+    </div>
 
-    <!-- Configuración Superior -->
+    <!-- Barra de Configuración Superior -->
     <div class="settings-section">
         <div style="display:flex; align-items:center; gap:8px;">
-            <label style="margin:0;">🖼 Fondo:</label>
+            <label style="margin:0;">🖼 Wallpaper:</label>
             <input type="file" id="bgInput" accept="image/*" style="display:none;">
-            <button onclick="document.getElementById('bgInput').click()" style="background:#1e2530; color:white; border:1px solid var(--border-color); padding:5px 10px; border-radius:6px; font-size:11px; cursor:pointer;">Subir Imagen</button>
+            <button onclick="document.getElementById('bgInput').click()" style="background:#1a202c; color:white; border:1px solid var(--border-color); padding:5px 10px; border-radius:4px; font-size:11px; cursor:pointer;">Cargar</button>
             <input type="checkbox" id="toggleBg" onchange="toggleCustomBg()" style="cursor:pointer;">
         </div>
         <div class="backup-btns">
-            <button onclick="exportarDatos()">📥 Guardar Respaldo</button>
-            <button onclick="document.getElementById('importInput').click()">📤 Cargar Respaldo</button>
-            <input type="file" id="importInput" accept=".json" style="display:none;" onchange="importarDatos(this)">
+            <button onclick="exportarTodo()">📥 Exportar JSON</button>
+            <button onclick="document.getElementById('importInput').click()">📤 Importar JSON</button>
+            <input type="file" id="importInput" accept=".json" style="display:none;" onchange="importarTodo(this)">
         </div>
     </div>
 
-    <!-- PESTAÑAS (Botones principales cuyos nombres ahora puedes editar) -->
+    <!-- Pestañas Principales Intercambiables -->
     <div class="tabs-container" id="tabsLayout">
-        <button class="tab-btn active" data-tab="seccion1" id="btn-seccion1" onclick="cambiarPestaña('seccion1')">Favoritos</button>
-        <button class="tab-btn" data-tab="seccion2" id="btn-seccion2" onclick="cambiarPestaña('seccion2')">Planes</button>
-        <button class="tab-btn" data-tab="seccion3" id="btn-seccion3" onclick="cambiarPestaña('seccion3')">Alertas / No</button>
+        <button class="tab-btn active" data-tab="seccion1" id="btn-seccion1" onclick="cambiarPestaña('seccion1')">Sección 1</button>
+        <button class="tab-btn" data-tab="seccion2" id="btn-seccion2" onclick="cambiarPestaña('seccion2')">Sección 2</button>
+        <button class="tab-btn" data-tab="seccion3" id="btn-seccion3" onclick="cambiarPestaña('seccion3')">Sección 3</button>
     </div>
     
-    <!-- Formulario Organizado -->
+    <!-- Bloque de Ingreso de Datos -->
     <div class="grid-form">
         
         <div class="form-group">
-            <label id="label-dinamico">Tipo de Registro:</label>
+            <label id="label-dinamico">Clasificación:</label>
             <div class="select-with-btn">
                 <select id="subCategoria">
                     <!-- Dinámico -->
                 </select>
-                <button class="btn-gear" onclick="toggleManagerPanel()">⚙ MODO EDIT</button>
+                <button class="btn-gear" onclick="toggleMasterPanel()">⚙ MODO EDIT</button>
             </div>
         </div>
 
-        <!-- PANEL DE CONTROL AVANZADO (Edita nombres de pestañas y subcategorías aquí) -->
-        <div class="manager-panel" id="managerPanel">
-            <!-- 1. Editar Nombre de la pestaña actual -->
-            <div class="manager-row">
-                <label style="color: #fff;">✏️ Cambiar nombre a esta Pestaña:</label>
-                <div style="display:flex; gap:8px; margin-top:4px;">
-                    <input type="text" id="editNombreTabInput" placeholder="Nuevo nombre de la pestaña...">
-                    <button onclick="renombrarPestañaActual()" style="background:#22c55e; color:white; border:none; padding:0 12px; border-radius:6px; font-weight:bold; cursor:pointer;">Guardar Nombre</button>
+        <!-- ================= MESA DE CONTROL MAESTRA (EDITA TODO AQUÍ) ================= -->
+        <div class="master-panel" id="masterPanel">
+            
+            <!-- 1. Título y Nombres de Pestañas -->
+            <div class="panel-section">
+                <h4>✏️ Editar Nombres Principales</h4>
+                <div style="margin-bottom:8px;">
+                    <label style="color:#a1a1aa;">Título de la App:</label>
+                    <input type="text" id="editAppTitle" style="width:100%; box-sizing:border-box; margin-top:2px;" onchange="guardarNombresEstructurales()">
+                </div>
+                <div class="inputs-row-grid">
+                    <div>
+                        <label style="color:#a1a1aa;">Pestaña 1 (Cyan):</label>
+                        <input type="text" id="editTab1" style="width:100%; box-sizing:border-box;" onchange="guardarNombresEstructurales()">
+                    </div>
+                    <div>
+                        <label style="color:#a1a1aa;">Pestaña 2 (Morado):</label>
+                        <input type="text" id="editTab2" style="width:100%; box-sizing:border-box;" onchange="guardarNombresEstructurales()">
+                    </div>
+                    <div style="grid-column: span 2;">
+                        <label style="color:#a1a1aa;">Pestaña 3 (Rosa):</label>
+                        <input type="text" id="editTab3" style="width:100%; box-sizing:border-box;" onchange="guardarNombresEstructurales()">
+                    </div>
                 </div>
             </div>
 
-            <!-- 2. Administrar Subcategorías -->
-            <div>
-                <label style="color: #fff;">🔧 Añadir Opción Desplegable:</label>
-                <div style="display:flex; gap:8px; margin-top:4px;">
-                    <input type="text" id="nuevaOptInput" placeholder="Ej: Ropa, Dulces, Series...">
-                    <button onclick="agregarNuevaOpcion()" style="background:#fff; color:#000; border:none; padding:0 15px; border-radius:6px; font-weight:bold; cursor:pointer;">+</button>
+            <!-- 2. Modificar Opciones del Desplegable Actual -->
+            <div class="panel-section">
+                <h4>🔧 Opciones del Desplegable (Pestaña Activa)</h4>
+                <div style="display:flex; gap:8px;">
+                    <input type="text" id="nuevaOptInput" placeholder="Ej: Ropa, Dulces, Marcas..." style="flex:1;">
+                    <button onclick="agregarNuevaOpcion()" style="background:#fff; color:#000; border:none; padding:0 15px; border-radius:4px; font-weight:bold; cursor:pointer;">+</button>
                 </div>
-                <div class="manager-list" id="managerList">
-                    <!-- Lista con botones X -->
-                </div>
+                <div class="manager-list" id="managerList"></div>
             </div>
+
+            <!-- 3. Modificar Opciones de Importancia e Importancia Mood -->
+            <div class="panel-section">
+                <h4>🔥 Editar Lista de Importancia / Niveles</h4>
+                <div style="display:flex; gap:8px; margin-bottom:8px;">
+                    <input type="text" id="nuevaImportanciaInput" placeholder="Ej: ⭐ Detalle casual, 🔥 Obsesión..." style="flex:1;">
+                    <button onclick="agregarItemConfig('nivelesImportancia', 'nuevaImportanciaInput')" style="background:#fff; color:#000; border:none; padding:0 15px; border-radius:4px; font-weight:bold; cursor:pointer;">+</button>
+                </div>
+                <div class="manager-list" id="importanciaList"></div>
+            </div>
+
+            <div class="panel-section">
+                <h4>😊 Editar Lista de Contexto / Moods</h4>
+                <div style="display:flex; gap:8px;">
+                    <input type="text" id="nuevoMoodInput" placeholder="Ej: 😊 Feliz, 🍕 Con antojo..." style="flex:1;">
+                    <button onclick="agregarItemConfig('moods', 'nuevoMoodInput')" style="background:#fff; color:#000; border:none; padding:0 15px; border-radius:4px; font-weight:bold; cursor:pointer;">+</button>
+                </div>
+                <div class="manager-list" id="moodsList"></div>
+            </div>
+
         </div>
+        <!-- ============================================================================= -->
 
         <div class="form-group">
             <label for="obsesion">Nivel de Importancia / Interés:</label>
             <select id="obsesion">
-                <option value="⚡ Casual / Detalle Simple">⚡ Casual / Detalle Simple</option>
-                <option value="⭐⭐ Le gusta bastante">⭐⭐ Le gusta bastante</option>
-                <option value="🔥🔥 Interés Extremo" selected>🔥🔥 Interés Extremo</option>
+                <!-- Dinámico -->
             </select>
         </div>
 
         <div class="form-group">
             <label for="mood">Humor / Contexto:</label>
             <select id="mood">
-                <option value="😊 Feliz / Tranquila">😊 Feliz / Tranquila</option>
-                <option value="🍕 Con Antojo">🍕 Con Antojo</option>
-                <option value="🥱 Charla Casual">🥱 Charla Casual</option>
-                <option value="🔥 Molesta / Queja">🔥 Molesta / Queja</option>
+                <!-- Dinámico -->
             </select>
         </div>
 
@@ -380,60 +413,79 @@
         </div>
 
         <div class="form-group full-width">
-            <label for="detalle">Detalle del registro (¿Qué pasó o qué te dijo?):</label>
-            <textarea id="detalle" rows="2" placeholder="Escribe el dato aquí..."></textarea>
+            <label for="detalle">Contenido del Registro:</label>
+            <textarea id="detalle" rows="2" placeholder="Escribe el dato exacto aquí..."></textarea>
         </div>
 
-        <button class="btn-guardar" onclick="procesarYGuardar()">Guardar Datos Core</button>
+        <button class="btn-guardar" onclick="procesarYGuardar()">Guardar Registro Permanente</button>
     </div>
 
     <!-- Buscador Integrado -->
     <div style="margin: 20px 0 10px 0;">
-        <input type="text" id="buscador" onkeyup="filtrarNotas()" placeholder="🔍 Buscar palabras clave en esta sección..." style="width:100%; box-sizing:border-box;">
+        <input type="text" id="buscador" onkeyup="filtrarNotas()" placeholder="🔍 Escanear palabras clave en esta sección..." style="width:100%; box-sizing:border-box;">
     </div>
 
-    <!-- Muestra de Tarjetas -->
+    <!-- Contenedor de Tarjetas -->
     <div class="notas-grid" id="listaNotas"></div>
 </div>
 
 <script>
-    // Configuración inicial por defecto
-    const estructuraInicial = {
+    // Configuración estructural por defecto editable
+    const configPorDefecto = {
+        tituloApp: "REGISTROS CORE",
         nombresTabs: {
             seccion1: "Favoritos",
             seccion2: "Planes",
             seccion3: "Alertas / No"
         },
-        opciones: {
+        opcionesSub: {
             seccion1: ["Comida 🍔", "Música 🎵", "Color 🎨", "Dulces 🍫"],
             seccion2: ["Pelis / Series 🍿", "Lugares por ir ✈️", "Planes juntos 🧗"],
-            seccion3: ["Disgustos 🤢", "Alergias 💊", "Fechas Clave 📅"]
-        }
+            seccion3: ["Disgustos 🤢", "Alergias 💊", "Fechas Peligro 📅"]
+        },
+        nivelesImportancia: [
+            "⚡ Casual / Detalle Simple",
+            "⭐⭐ Le gusta bastante",
+            "🔥🔥 Interés Extremo"
+        ],
+        moods: [
+            "😊 Feliz / Tranquila",
+            "🍕 Con Antojo",
+            "🥱 Charla Casual",
+            "🔥 Molesta / Queja"
+        ]
     };
 
-    let appData = {};
+    let appConfig = {};
     let seccionActual = "seccion1";
 
     document.addEventListener("DOMContentLoaded", () => {
-        const datosGuardados = localStorage.getItem("appDataConfigurable");
-        if (datosGuardados) {
-            appData = JSON.parse(datosGuardados);
+        const localConfig = localStorage.getItem("masterAppConfig");
+        if (localConfig) {
+            appConfig = JSON.parse(localConfig);
         } else {
-            appData = JSON.parse(JSON.stringify(estructuraInicial));
-            localStorage.setItem("appDataConfigurable", JSON.stringify(appData));
+            appConfig = JSON.parse(JSON.stringify(configPorDefecto));
+            localStorage.setItem("masterAppConfig", JSON.stringify(appConfig));
         }
 
-        renderizarNombresPestañas();
-        inicializarSelectores();
+        aplicarConfiguracionEstructural();
+        inicializarSelectoresMecanicos();
         mostrarNotas();
         loadCustomBg();
     });
 
-    // Actualiza los textos de los botones superiores según lo que hayas editado
-    function renderizarNombresPestañas() {
-        document.getElementById("btn-seccion1").textContent = appData.nombresTabs.seccion1;
-        document.getElementById("btn-seccion2").textContent = appData.nombresTabs.seccion2;
-        document.getElementById("btn-seccion3").textContent = appData.nombresTabs.seccion3;
+    // Carga los nombres editados en los componentes visuales de la App
+    function aplicarConfiguracionEstructural() {
+        document.getElementById("app-title").textContent = appConfig.tituloApp;
+        document.getElementById("btn-seccion1").textContent = appConfig.nombresTabs.seccion1;
+        document.getElementById("btn-seccion2").textContent = appConfig.nombresTabs.seccion2;
+        document.getElementById("btn-seccion3").textContent = appConfig.nombresTabs.seccion3;
+
+        // Cargar inputs del panel máster con los nombres actuales
+        document.getElementById("editAppTitle").value = appConfig.tituloApp;
+        document.getElementById("editTab1").value = appConfig.nombresTabs.seccion1;
+        document.getElementById("editTab2").value = appConfig.nombresTabs.seccion2;
+        document.getElementById("editTab3").value = appConfig.nombresTabs.seccion3;
     }
 
     function cambiarPestaña(idSeccion) {
@@ -441,83 +493,116 @@
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(`btn-${idSeccion}`).classList.add('active');
         
-        document.getElementById("managerPanel").style.display = "none";
+        document.getElementById("masterPanel").style.display = "none";
 
-        inicializarSelectores();
+        inicializarSelectoresMecanicos();
         mostrarNotas();
     }
 
-    function inicializarSelectores() {
+    // Genera las opciones de los selects desplegables basados en la configuración editable
+    function inicializarSelectoresMecanicos() {
+        // 1. Subcategorías de la pestaña activa
         const subCatSelect = document.getElementById("subCategoria");
         subCatSelect.innerHTML = "";
-        
-        const nombreVisibleTab = appData.nombresTabs[seccionActual];
-        document.getElementById("label-dinamico").textContent = `Categorías de [${nombreVisibleTab}]:`;
-        document.getElementById("editNombreTabInput").value = nombreVisibleTab;
-
-        appData.opciones[seccionActual].forEach(opt => {
-            let option = document.createElement("option");
-            option.value = opt;
-            option.textContent = opt;
-            subCatSelect.appendChild(option);
+        document.getElementById("label-dinamico").textContent = `Categoría [${appConfig.nombresTabs[seccionActual]}]:`;
+        appConfig.opcionesSub[seccionActual].forEach(opt => {
+            subCatSelect.innerHTML += `<option value="${opt}">${opt}</option>`;
         });
 
-        actualizarListaPanelManager();
+        // 2. Desplegable de Niveles de Importancia
+        const obsesionSelect = document.getElementById("obsesion");
+        obsesionSelect.innerHTML = "";
+        appConfig.nivelesImportancia.forEach(niv => {
+            obsesionSelect.innerHTML += `<option value="${niv}">${niv}</option>`;
+        });
+
+        // 3. Desplegable de Moods
+        const moodSelect = document.getElementById("mood");
+        moodSelect.innerHTML = "";
+        appConfig.moods.forEach(m => {
+            moodSelect.innerHTML += `<option value="${m}">${m}</option>`;
+        });
+
+        renderizarListasPanelMaster();
     }
 
-    function toggleManagerPanel() {
-        const panel = document.getElementById("managerPanel");
+    function toggleMasterPanel() {
+        const panel = document.getElementById("masterPanel");
         panel.style.display = (panel.style.display === "block") ? "none" : "block";
     }
 
-    // RENOMBRAR LA PESTAÑA DESDE LA INTERFAZ
-    function renombrarPestañaActual() {
-        const input = document.getElementById("editNombreTabInput");
-        const nuevoNombre = input.value.trim();
-        if (nuevoNombre === "") { alert("El nombre no puede estar vacío."); return; }
+    // Guarda los cambios escritos en los inputs de los nombres principales
+    function guardarNombresEstructurales() {
+        appConfig.tituloApp = document.getElementById("editAppTitle").value.trim() || "MIS REGISTROS";
+        appConfig.nombresTabs.seccion1 = document.getElementById("editTab1").value.trim() || "Sección 1";
+        appConfig.nombresTabs.seccion2 = document.getElementById("editTab2").value.trim() || "Sección 2";
+        appConfig.nombresTabs.seccion3 = document.getElementById("editTab3").value.trim() || "Sección 3";
 
-        appData.nombresTabs[seccionActual] = nuevoNombre;
-        localStorage.setItem("appDataConfigurable", JSON.stringify(appData));
-        
-        renderizarNombresPestañas();
-        inicializarSelectores();
-        alert(`Pestaña renombrada a "${nuevoNombre}"`);
+        localStorage.setItem("masterAppConfig", JSON.stringify(appConfig));
+        aplicarConfiguracionEstructural();
+        document.getElementById("label-dinamico").textContent = `Categoría [${appConfig.nombresTabs[seccionActual]}]:`;
     }
 
-    function actualizarListaPanelManager() {
-        const listContainer = document.getElementById("managerList");
-        listContainer.innerHTML = "";
+    // Renderiza las colecciones de botones 'X' dentro del panel máster
+    function renderizarListasPanelMaster() {
+        // Listar subcategorías
+        const containerSub = document.getElementById("managerList");
+        containerSub.innerHTML = "";
+        appConfig.opcionesSub[seccionActual].forEach((opt, index) => {
+            containerSub.innerHTML += `<div class="manager-item"><span>${opt}</span><span class="delete-opt" onclick="eliminarSubCategoria(${index})">×</span></div>`;
+        });
 
-        appData.opciones[seccionActual].forEach((opt, index) => {
-            listContainer.innerHTML += `
-                <div class="manager-item">
-                    <span>${opt}</span>
-                    <span class="delete-opt" onclick="eliminarOpcion(${index})">×</span>
-                </div>
-            `;
+        // Listar Niveles de Importancia
+        const containerImp = document.getElementById("importanciaList");
+        containerImp.innerHTML = "";
+        appConfig.nivelesImportancia.forEach((opt, index) => {
+            containerImp.innerHTML += `<div class="manager-item"><span>${opt}</span><span class="delete-opt" onclick="eliminarItemConfig('nivelesImportancia', ${index})">×</span></div>`;
+        });
+
+        // Listar Moods
+        const containerMoods = document.getElementById("moodsList");
+        containerMoods.innerHTML = "";
+        appConfig.moods.forEach((opt, index) => {
+            containerMoods.innerHTML += `<div class="manager-item"><span>${opt}</span><span class="delete-opt" onclick="eliminarItemConfig('moods', ${index})">×</span></div>`;
         });
     }
 
+    // Funciones de alteración de arreglos desde el Panel Máster
     function agregarNuevaOpcion() {
         const input = document.getElementById("nuevaOptInput");
         const valor = input.value.trim();
-        if (valor === "") return;
-
-        if (appData.opciones[seccionActual].includes(valor)) { return; }
-
-        appData.opciones[seccionActual].push(valor);
-        localStorage.setItem("appDataConfigurable", JSON.stringify(appData));
-        
-        input.value = "";
-        inicializarSelectores();
+        if (valor && !appConfig.opcionesSub[seccionActual].includes(valor)) {
+            appConfig.opcionesSub[seccionActual].push(valor);
+            localStorage.setItem("masterAppConfig", JSON.stringify(appConfig));
+            input.value = "";
+            inicializarSelectoresMecanicos();
+        }
     }
 
-    function eliminarOpcion(index) {
-        appData.opciones[seccionActual].splice(index, 1);
-        localStorage.setItem("appDataConfigurable", JSON.stringify(appData));
-        inicializarSelectores();
+    function eliminarSubCategoria(index) {
+        appConfig.opcionesSub[seccionActual].splice(index, 1);
+        localStorage.setItem("masterAppConfig", JSON.stringify(appConfig));
+        inicializarSelectoresMecanicos();
     }
 
+    function agregarItemConfig(llaveArray, inputId) {
+        const input = document.getElementById(inputId);
+        const valor = input.value.trim();
+        if (valor && !appConfig[llaveArray].includes(valor)) {
+            appConfig[llaveArray].push(valor);
+            localStorage.setItem("masterAppConfig", JSON.stringify(appConfig));
+            input.value = "";
+            inicializarSelectoresMecanicos();
+        }
+    }
+
+    function eliminarItemConfig(llaveArray, index) {
+        appConfig[llaveArray].splice(index, 1);
+        localStorage.setItem("masterAppConfig", JSON.stringify(appConfig));
+        inicializarSelectoresMecanicos();
+    }
+
+    // --- LÓGICA DE PROCESAMIENTO DE REGISTROS ---
     function procesarYGuardar() {
         const subCategoria = document.getElementById("subCategoria").value;
         const obsesion = document.getElementById("obsesion").value;
@@ -525,7 +610,7 @@
         const detalle = document.getElementById("detalle").value;
         const archivoImagen = document.getElementById("imagenInput").files[0];
 
-        if (!subCategoria || detalle.trim() === "") { alert("Llena los campos obligatorios."); return; }
+        if (!subCategoria || detalle.trim() === "") { alert("Completa los datos del registro."); return; }
 
         if (archivoImagen) {
             const lector = new FileReader();
@@ -539,7 +624,7 @@
     function guardarNotaFinal(subCat, obs, md, det, imgBase64) {
         const nuevaNota = {
             id: Date.now(),
-            seccionId: seccionActual, // Se liga al identificador interno permanente
+            seccionId: seccionActual,
             subCategoria: subCat,
             obsesion: obs,
             mood: md,
@@ -548,9 +633,9 @@
             fecha: new Date().toLocaleDateString('es-MX', { month: 'short', day: 'numeric' })
         };
 
-        let notas = JSON.parse(localStorage.getItem("misNotasConfigurables")) || [];
+        let notas = JSON.parse(localStorage.getItem("masterAppNotas")) || [];
         notas.push(nuevaNota);
-        localStorage.setItem("misNotasConfigurables", JSON.stringify(notas));
+        localStorage.setItem("masterAppNotas", JSON.stringify(notas));
         
         document.getElementById("detalle").value = "";
         document.getElementById("imagenInput").value = "";
@@ -561,11 +646,11 @@
         const lista = document.getElementById("listaNotas");
         lista.innerHTML = "";
         
-        let notas = JSON.parse(localStorage.getItem("misNotasConfigurables")) || [];
+        let notas = JSON.parse(localStorage.getItem("masterAppNotas")) || [];
         let notasFiltradas = notas.filter(n => n.seccionId === seccionActual);
 
         if (notasFiltradas.length === 0) {
-            lista.innerHTML = `<p style='color:var(--text-muted); text-align:center; grid-column:span 2; padding:30px;'>No hay datos guardados aquí todavía.</p>`;
+            lista.innerHTML = `<p style='color:var(--text-muted); text-align:center; grid-column:span 2; padding:30px;'>Sin registros archivados en este espacio.</p>`;
             return;
         }
 
@@ -599,15 +684,15 @@
     }
 
     function borrarNota(id) {
-        if(confirm("¿Eliminar este registro permanente?")) {
-            let notas = JSON.parse(localStorage.getItem("misNotasConfigurables")) || [];
+        if(confirm("¿Eliminar este registro permanente de la base de datos?")) {
+            let notas = JSON.parse(localStorage.getItem("masterAppNotas")) || [];
             notas = notas.filter(nota => nota.id !== id);
-            localStorage.setItem("misNotasConfigurables", JSON.stringify(notas));
+            localStorage.setItem("masterAppNotas", JSON.stringify(notas));
             mostrarNotas();
         }
     }
 
-    // --- Wallpaper Backend ---
+    // --- Control del Fondo (Filtro blur elegante, sin saturación) ---
     const bgInput = document.getElementById('bgInput');
     const bodyBgLayer = document.getElementById('body-bg-layer');
     const toggleBg = document.getElementById('toggleBg');
@@ -617,10 +702,10 @@
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                localStorage.setItem('customBgConfig', e.target.result);
+                localStorage.setItem('masterAppBgImg', e.target.result);
                 applyBgImage(e.target.result);
                 toggleBg.checked = true;
-                localStorage.setItem('useCustomBgConf', 'true');
+                localStorage.setItem('masterAppUseBg', 'true');
             }
             reader.readAsDataURL(file);
         }
@@ -633,53 +718,54 @@
 
     function toggleCustomBg() {
         if (toggleBg.checked) {
-            const storedImg = localStorage.getItem('customBgConfig');
-            if (storedImg) { bodyBgLayer.style.display = 'block'; localStorage.setItem('useCustomBgConf', 'true'); }
-            else { alert("Primero sube una imagen."); toggleBg.checked = false; }
+            const storedImg = localStorage.getItem('masterAppBgImg');
+            if (storedImg) { bodyBgLayer.style.display = 'block'; localStorage.setItem('masterAppUseBg', 'true'); }
+            else { alert("Sube un archivo de imagen válido primero."); toggleBg.checked = false; }
         } else {
-            bodyBgLayer.style.display = 'none'; localStorage.setItem('useCustomBgConf', 'false');
+            bodyBgLayer.style.display = 'none'; localStorage.setItem('masterAppUseBg', 'false');
         }
     }
 
     function loadCustomBg() {
-        const storedImg = localStorage.getItem('customBgConfig');
-        const useCustom = localStorage.getItem('useCustomBgConf');
+        const storedImg = localStorage.getItem('masterAppBgImg');
+        const useCustom = localStorage.getItem('masterAppUseBg');
         if (storedImg) applyBgImage(storedImg);
         if (useCustom === 'true') { toggleBg.checked = true; bodyBgLayer.style.display = 'block'; }
         else { toggleBg.checked = false; bodyBgLayer.style.display = 'none'; }
     }
 
-    // --- Respaldos Avanzados (Guarda notas + nombres editados + opciones) ---
-    function exportarDatos() {
-        const notas = localStorage.getItem("misNotasConfigurables") || "[]";
-        const configuracion = localStorage.getItem("appDataConfigurable") || "{}";
-        const payload = { notas: JSON.parse(notas), configuracion: JSON.parse(configuracion) };
+    // --- Sistema Integral de Backups Completo ---
+    function exportarTodo() {
+        const notas = localStorage.getItem("masterAppNotas") || "[]";
+        const configuracion = localStorage.getItem("masterAppConfig") || "{}";
+        const payloadTotal = { notas: JSON.parse(notas), configuracion: JSON.parse(configuracion) };
         
-        const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
+        const blob = new Blob([JSON.stringify(payloadTotal)], { type: "application/json" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `backup_sistema_datos.json`;
+        a.download = `backup_sistema_maestro.json`;
         a.click();
     }
 
-    function importarDatos(input) {
+    function importarTodo(input) {
         const archivo = input.files[0];
         if (!archivo) return;
         const lector = new FileReader();
         lector.onload = function(e) {
             try {
-                const payload = JSON.parse(e.target.result);
-                if (payload.notas && payload.configuracion) {
-                    localStorage.setItem("misNotasConfigurables", JSON.stringify(payload.notas));
-                    localStorage.setItem("appDataConfigurable", JSON.stringify(payload.configuracion));
-                    appData = payload.configuracion;
-                    renderizarNombresPestañas();
-                    inicializarSelectores();
+                const payloadTotal = JSON.parse(e.target.result);
+                if (payloadTotal.notas && payloadTotal.configuracion) {
+                    localStorage.setItem("masterAppNotas", JSON.stringify(payloadTotal.notas));
+                    localStorage.setItem("masterAppConfig", JSON.stringify(payloadTotal.configuracion));
+                    appConfig = payloadTotal.configuracion;
+                    
+                    aplicarConfiguracionEstructural();
+                    inicializarSelectoresMecanicos();
                     mostrarNotas();
-                    alert("¡Todo importado y configurado con éxito!");
+                    alert("¡Sistema Maestro restaurado y actualizado al 100%!");
                 }
-            } catch (err) { alert("Error en el archivo."); }
+            } catch (err) { alert("Error crítico al procesar el archivo JSON."); }
         };
         lector.readAsText(archivo);
     }
